@@ -1,2 +1,2 @@
 ## AI_Art  
-bitch
+There's not actually any AI here

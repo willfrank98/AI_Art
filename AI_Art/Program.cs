@@ -9,10 +9,12 @@ namespace AI_Art
 		{
 			Console.Write("Enter a random seed: ");
 			var seed = Console.ReadLine();
-			var gen = new ImageGenerator();
-			var image = gen.DrawTextImage("sample text", new Font(FontFamily.GenericMonospace, 12), Color.Black, Color.White);
-			image.Save("image.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-			image.Dispose();
+			var game = new Game(seed);
+
+
+			//var image = gen.DrawTextImage("sample text", new Font(FontFamily.GenericMonospace, 12), Color.Black, Color.White);
+			//image.Save("image.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+			//image.Dispose();
 		}
 	}
 }
