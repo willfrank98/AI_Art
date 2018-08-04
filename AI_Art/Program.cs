@@ -10,6 +10,15 @@ namespace AI_Art
 			Console.Write("Enter a random seed: ");
 			var seed = Console.ReadLine();
 			var game = new Game(seed);
+			
+
+			Console.Write("Enter top 3 images: ");
+			var tops = new int[3];
+			for (int i = 0; i < tops.Length; i++)
+			{
+				tops[i] = int.Parse(Console.ReadLine());
+			}
+
 
 
 			//var image = gen.DrawTextImage("sample text", new Font(FontFamily.GenericMonospace, 12), Color.Black, Color.White);

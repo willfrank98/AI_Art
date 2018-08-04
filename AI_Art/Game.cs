@@ -14,7 +14,18 @@ namespace AI_Art
 			_gameImages = new ImageData[_masterRandom.Next(10, 20)];
 			for (int i = 0; i < _gameImages.Length; i++)
 			{
-				_gameImages[i] = new ImageData(_masterRandom);
+				_gameImages[i] = new ImageData(_masterRandom, i);
+			}
+		}
+
+		/// <summary>
+		/// Draws _gameImages to image files
+		/// </summary>
+		public void Draw()
+		{
+			foreach (var image in _gameImages)
+			{
+				image.Draw();
 			}
 		}
 	}
