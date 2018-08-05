@@ -17,7 +17,8 @@ namespace AI_Art
 		{
 			_imageNumber = imageNumber;
 
-			int num = rand.Next(30, 50);
+			//int num = rand.Next(30, 50);
+			int num = 50;
 
 			_triangles = new Triangle[num];
 			for (int i = 0; i < _triangles.Length; i++)
@@ -45,6 +46,16 @@ namespace AI_Art
 			_image = new Bitmap(1920, 1080);
 		}
 
+		public ImageData(Random rand, params Triangle[] triangles)
+		{
+			_triangles = triangles;
+
+			_displayOrder = Enumerable.Range(0, triangles.Length).ToArray();
+			Shuffle(rand, _displayOrder);
+
+			_image = new Bitmap(1920, 1080);
+		}
+
 		/// <summary>
 		/// Draws each image to a file based on its data
 		/// </summary>
@@ -64,6 +75,11 @@ namespace AI_Art
 			}
 
 			_image.Save($"image{_imageNumber}.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+		}
+
+		public Triangle GetTriangle(int position)
+		{
+			return _triangles[position];
 		}
 
 		private void Shuffle(Random rand, int[] arr)

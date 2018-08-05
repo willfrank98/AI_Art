@@ -12,12 +12,21 @@ namespace AI_Art
 			var game = new Game(seed);
 			game.Draw();
 
-			//Console.Write("Enter top 2 images: ");
-			//var tops = new int[2];
-			//for (int i = 0; i < tops.Length; i++)
-			//{
-			//	tops[i] = int.Parse(Console.ReadLine());
-			//}
+			while (true)
+			{
+				Console.Write("Enter your 3 favorite images, from most to least (1-9), seperated by commas: ");
+				int[] toCombine = new int[3];
+				var temp = Console.ReadLine().Split(',');
+
+				if (temp[0].Equals("done", StringComparison.OrdinalIgnoreCase)) return;
+
+				for (int i = 0; i < 3; i++)
+				{
+					toCombine[i] = int.Parse(temp[i]);
+				}
+
+				game.CombineAndDraw(toCombine);
+			}
 		}
 	}
 }
