@@ -7,23 +7,17 @@ namespace AI_Art
 	{
 		static void Main(string[] args)
 		{
-			Console.Write("Enter a random seed: ");
-			var seed = Console.ReadLine();
+			//Console.Write("Enter a random seed: ");
+			var seed = /*Console.ReadLine();*/"will";
 			var game = new Game(seed);
-			
+			game.Draw();
 
-			Console.Write("Enter top 3 images: ");
-			var tops = new int[3];
-			for (int i = 0; i < tops.Length; i++)
-			{
-				tops[i] = int.Parse(Console.ReadLine());
-			}
-
-
-
-			//var image = gen.DrawTextImage("sample text", new Font(FontFamily.GenericMonospace, 12), Color.Black, Color.White);
-			//image.Save("image.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-			//image.Dispose();
+			//Console.Write("Enter top 2 images: ");
+			//var tops = new int[2];
+			//for (int i = 0; i < tops.Length; i++)
+			//{
+			//	tops[i] = int.Parse(Console.ReadLine());
+			//}
 		}
 	}
 }

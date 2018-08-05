@@ -11,7 +11,7 @@ namespace AI_Art
 		{
 			_masterRandom = new Random(seed.GetHashCode());
 
-			_gameImages = new ImageData[_masterRandom.Next(10, 20)];
+			_gameImages = new ImageData[2];
 			for (int i = 0; i < _gameImages.Length; i++)
 			{
 				_gameImages[i] = new ImageData(_masterRandom, i);
@@ -27,6 +27,11 @@ namespace AI_Art
 			{
 				image.Draw();
 			}
+		}
+
+		public void ProduceOffspring()
+		{
+
 		}
 	}
 }
