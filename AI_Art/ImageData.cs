@@ -8,7 +8,6 @@ namespace AI_Art
 	{
 		private readonly int MAX_LENGTH = 500;
 		private Triangle[] _triangles;
-		private int[] _displayOrder;
 		private int _imageNumber;
 
 		private Image _image;
@@ -17,8 +16,8 @@ namespace AI_Art
 		{
 			_imageNumber = imageNumber;
 
-			//int num = rand.Next(30, 50);
-			int num = 50;
+			int num = rand.Next(50, 100);
+			//int num = 50;
 
 			_triangles = new Triangle[num];
 			for (int i = 0; i < _triangles.Length; i++)
@@ -40,18 +39,12 @@ namespace AI_Art
 				_triangles[i] = new Triangle(new Point[] { point1, point2, point3}, brush);
 			}
 
-			_displayOrder = Enumerable.Range(0, num).ToArray();
-			Shuffle(rand, _displayOrder);
-
 			_image = new Bitmap(1920, 1080);
 		}
 
-		public ImageData(Random rand, params Triangle[] triangles)
+		public ImageData(params Triangle[] triangles)
 		{
 			_triangles = triangles;
-
-			_displayOrder = Enumerable.Range(0, triangles.Length).ToArray();
-			Shuffle(rand, _displayOrder);
 
 			_image = new Bitmap(1920, 1080);
 		}
@@ -65,10 +58,8 @@ namespace AI_Art
 			{
 				drawing.Clear(Color.White);
 
-				for (int i = 0; i < _displayOrder.Length; i++)
-				{
-					var triangle = _triangles[_displayOrder[i]];
-
+				foreach (var triangle in _triangles)
+				{ 
 					drawing.FillPolygon(triangle._brush, triangle._points);
 				}
 				drawing.Save();
@@ -80,6 +71,11 @@ namespace AI_Art
 		public Triangle GetTriangle(int position)
 		{
 			return _triangles[position];
+		}
+
+		public Triangle[] GetTriangles()
+		{
+			return _triangles;
 		}
 
 		private void Shuffle(Random rand, int[] arr)
