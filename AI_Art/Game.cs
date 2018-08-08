@@ -8,14 +8,14 @@ namespace AI_Art
 		private ImageData[] _gameImages;
 		private Random _masterRandom;
 
-		public Game(string seed)
+		public Game(string seed, int numberOfImages)
 		{
 			_masterRandom = new Random(seed.GetHashCode());
 
-			_gameImages = new ImageData[10];
+			_gameImages = new ImageData[numberOfImages];
 			for (int i = 0; i < _gameImages.Length; i++)
 			{
-				_gameImages[i] = new ImageData(_masterRandom, i);
+				_gameImages[i] = new ImageData(_masterRandom, i + 1);
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace AI_Art
 			var trianglesTwo = _gameImages[toCombine[1]].GetTriangles();
 			var trianglesThree = _gameImages[toCombine[2]].GetTriangles();
 
-			for (int i = 0; i < 9; i++)
+			for (int i = 0; i < _gameImages.Length; i++)
 			{
 				var newLength = (trianglesOne.Length * 3 + trianglesTwo.Length * 2 + trianglesThree.Length) / 6;
 				newLength += _masterRandom.Next(-newLength/10, newLength/10);
@@ -51,19 +51,40 @@ namespace AI_Art
 					}
 					else if (next < 30)
 					{
-						newTris[j] = trianglesOne[j] ?? new Triangle();
+						if (j < trianglesOne.Length)
+						{
+							newTris[j] = trianglesOne[j];
+						}
+						else
+						{
+							newTris[j] = new Triangle();
+						}
 					}
 					else if (next < 60)
 					{
-						newTris[j] = trianglesTwo[j] ?? new Triangle();
+						if (j < trianglesTwo.Length)
+						{
+							newTris[j] = trianglesTwo[j];
+						}
+						else
+						{
+							newTris[j] = new Triangle();
+						}
 					}
 					else
 					{
-						newTris[j] = trianglesThree[j] ?? new Triangle();
+						if (j < trianglesThree.Length)
+						{
+							newTris[j] = trianglesThree[j];
+						}
+						else
+						{
+							newTris[j] = new Triangle();
+						}
 					}
 				}
 
-				_gameImages[i] = new ImageData(newTris);
+				_gameImages[i] = new ImageData(i + 1, newTris);
 			}
 
 			Draw();

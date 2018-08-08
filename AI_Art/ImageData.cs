@@ -42,8 +42,9 @@ namespace AI_Art
 			_image = new Bitmap(1920, 1080);
 		}
 
-		public ImageData(params Triangle[] triangles)
+		public ImageData(int imageNumber, params Triangle[] triangles)
 		{
+			_imageNumber = imageNumber;
 			_triangles = triangles;
 
 			_image = new Bitmap(1920, 1080);
@@ -66,6 +67,7 @@ namespace AI_Art
 			}
 
 			_image.Save($"image{_imageNumber}.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+			_image.Dispose();
 		}
 
 		public Triangle GetTriangle(int position)

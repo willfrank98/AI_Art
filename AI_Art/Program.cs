@@ -9,22 +9,26 @@ namespace AI_Art
 		{
 			//Console.Write("Enter a random seed: ");
 			var seed = /*Console.ReadLine();*/"will";
-			var game = new Game(seed);
+			Console.Write("Hpw many images would you like to generate at once?: ");
+			var num = /*int.Parse(Console.ReadLine())*/ 10;
+			//var num = 10;
+			var game = new Game(seed, num);
 			game.Draw();
 
 			while (true)
 			{
-				Console.Write("Enter your 3 favorite images, from most to least (1-9), seperated by commas: ");
-				int[] toCombine = new int[3];
-				var temp = Console.ReadLine().Split(',');
+				//Console.Write("Enter your 3 favorite images, from most to least (1-9), seperated by commas: ");
+				//int[] toCombine = new int[3];
+				//var temp = Console.ReadLine().Split(',');
 
-				if (temp[0].Equals("done", StringComparison.OrdinalIgnoreCase)) return;
+				//if (temp[0].Equals("done", StringComparison.OrdinalIgnoreCase)) return;
 
-				for (int i = 0; i < 3; i++)
-				{
-					toCombine[i] = int.Parse(temp[i]);
-				}
+				//for (int i = 0; i < 3; i++)
+				//{
+				//	toCombine[i] = int.Parse(temp[i]);
+				//}
 
+				int[] toCombine = { 1, 2, 3 };
 				game.CombineAndDraw(toCombine);
 			}
 		}
