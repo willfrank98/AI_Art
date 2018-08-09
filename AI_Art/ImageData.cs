@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 
 namespace AI_Art
@@ -12,7 +13,7 @@ namespace AI_Art
 
 		private Image _image;
 
-		public ImageData(Random rand, int imageNumber)
+		public ImageData(Random rand, int imageNumber, int height, int width)
 		{
 			_imageNumber = imageNumber;
 
@@ -39,7 +40,7 @@ namespace AI_Art
 				_triangles[i] = new Triangle(new Point[] { point1, point2, point3}, brush);
 			}
 
-			_image = new Bitmap(1920, 1080);
+			_image = new Bitmap(width, height, PixelFormat.Format24bppRgb);
 		}
 
 		public ImageData(int imageNumber, params Triangle[] triangles)
@@ -67,7 +68,7 @@ namespace AI_Art
 			}
 
 			_image.Save($"image{_imageNumber}.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
-			_image.Dispose();
+			//_image.Dispose();
 		}
 
 		public Triangle GetTriangle(int position)
@@ -78,6 +79,11 @@ namespace AI_Art
 		public Triangle[] GetTriangles()
 		{
 			return _triangles;
+		}
+
+		public Image GetImage()
+		{
+			return _image;
 		}
 
 		private void Shuffle(Random rand, int[] arr)

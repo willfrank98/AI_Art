@@ -9,10 +9,12 @@ namespace AI_Art
 		{
 			//Console.Write("Enter a random seed: ");
 			var seed = /*Console.ReadLine();*/"will";
-			Console.Write("Hpw many images would you like to generate at once?: ");
-			var num = /*int.Parse(Console.ReadLine())*/ 10;
-			//var num = 10;
-			var game = new Game(seed, num);
+			//Console.Write("How many images would you like to generate at once?: ");
+			//var num = /*int.Parse(Console.ReadLine())*/ 10;
+			var num = 10;
+			var filepath = "C:\\Users\\Will\\Desktop\\MonaLisa.jpg";
+			var game = new Game(seed, num, filepath);
+
 			game.Draw();
 
 			while (true)
@@ -28,8 +30,11 @@ namespace AI_Art
 				//	toCombine[i] = int.Parse(temp[i]);
 				//}
 
-				int[] toCombine = { 1, 2, 3 };
-				game.CombineAndDraw(toCombine);
+				double[] matchPercents = game.EvaluateFitness();
+				game.CombineAndDraw(matchPercents);
+
+				//int[] toCombine = { 1, 2, 3 };
+				//game.CombineAndDraw(toCombine);
 			}
 		}
 	}
