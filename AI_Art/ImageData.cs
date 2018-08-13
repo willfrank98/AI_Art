@@ -43,12 +43,12 @@ namespace AI_Art
 			_image = new Bitmap(width, height, PixelFormat.Format24bppRgb);
 		}
 
-		public ImageData(int imageNumber, params Triangle[] triangles)
+		public ImageData(int imageNumber, int height, int width, Triangle[] triangles)
 		{
 			_imageNumber = imageNumber;
 			_triangles = triangles;
 
-			_image = new Bitmap(1920, 1080);
+			_image = new Bitmap(width, height, PixelFormat.Format24bppRgb);
 		}
 
 		/// <summary>

@@ -39,14 +39,31 @@ namespace AI_Art
 		{
 			for (int i = 0; i < _gameImages.Length; i++)
 			{
-				var tempTris = _gameImages[i].GetTriangles();
-
-				var newTris = new Triangle[tempTris.Length + 1];
-				for (int j = 0; j < tempTris.Length; j++)
+				var newTris = new Triangle[_gameImages[i].GetTriangles().Length];
+				for (int j = 0; j < newTris.Length; j++)
 				{
+					var rand = _masterRandom.Next(110);
 
+					if (rand > 100)
+					{
+						newTris[j] = new Triangle();
+					}
+					else
+					{
+						for (int k = 0; k < combinePercents.Length; k++)
+						{
+							if (rand < combinePercents[k])
+							{
+								newTris[j] = _gameImages[i].GetTriangle(j);
+							}
+						}
+					}
 				}
+
+				_gameImages[i] = new ImageData(i + 1, _targetImage.Height, _targetImage.Width, newTris);
 			}
+
+			Draw();
 		}
 
 		public double[] EvaluateFitness()
@@ -62,10 +79,10 @@ namespace AI_Art
 
 			double[] fitness = new double[fitnessSums.Length];
 
-			fitness[0] = fitnessSums[0] / total;
+			fitness[0] = (fitnessSums[0] / total) * 100;
 			for (int i = 1; i < fitness.Length; i++)
 			{
-				fitness[i] = (fitnessSums[i] / total) + fitness[i - 1];
+				fitness[i] = ((fitnessSums[i] / total) * 100) + fitness[i - 1];
 			}
 
 			return fitness;

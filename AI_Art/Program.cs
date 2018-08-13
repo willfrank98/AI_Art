@@ -8,7 +8,7 @@ namespace AI_Art
 		static void Main(string[] args)
 		{
 			//Console.Write("Enter a random seed: ");
-			var seed = /*Console.ReadLine();*/"will";
+			var seed = /*Console.ReadLine();*/"Will";
 			//Console.Write("How many images would you like to generate at once?: ");
 			//var num = /*int.Parse(Console.ReadLine())*/ 10;
 			var num = 10;
