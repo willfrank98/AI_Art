@@ -7,8 +7,7 @@ namespace AI_Art
 {
 	internal class ImageData
 	{
-		private readonly int MAX_LENGTH = 200;
-		private readonly int MIN_LENGTH = 100;
+
 		private Triangle[] _triangles;
 		private int _imageNumber;
 
@@ -24,53 +23,11 @@ namespace AI_Art
 			_triangles = new Triangle[numberOfTriangles];
 			for (int i = 0; i < _triangles.Length; i++)
 			{
-				var tempX1 = rand.Next(0, 1920);
-				var tempY1 = rand.Next(0, 1920);
-				var point1 = new Point(tempX1, tempY1);
-
-				var tempX2 = rand.Next((MAX_LENGTH - MIN_LENGTH) * 2);
-				if (tempX2 < MAX_LENGTH - MIN_LENGTH)
-				{
-					tempX2 = tempX1 - MIN_LENGTH - tempX2;
-				}
-				else
-				{
-					tempX2 = tempX1 + MIN_LENGTH + tempX2;
-				}
-				var tempY2 = rand.Next((MAX_LENGTH - MIN_LENGTH) * 2);
-				if (tempY2 < MAX_LENGTH - MIN_LENGTH)
-				{
-					tempY2 = tempY1 - MIN_LENGTH - tempY2;
-				}
-				else
-				{
-					tempY2 = tempY1 + MIN_LENGTH + tempY2;
-				}
-				var point2 = new Point(tempX2, tempY2);
-
-				var tempX3 = rand.Next((MAX_LENGTH - MIN_LENGTH) * 3);
-				if (tempX3 < MAX_LENGTH - MIN_LENGTH)
-				{
-					tempX3 = tempX1 - MIN_LENGTH - tempX3;
-				}
-				else
-				{
-					tempX3 = tempX1 + MIN_LENGTH + tempX3;
-				}
-				var tempY3 = rand.Next((MAX_LENGTH - MIN_LENGTH) * 3);
-				if (tempY3 < MAX_LENGTH - MIN_LENGTH)
-				{
-					tempY3 = tempY1 - MIN_LENGTH - tempY3;
-				}
-				else
-				{
-					tempY3 = tempY1 + MIN_LENGTH + tempY3;
-				}
-				var point3 = new Point(tempX3, tempY3);
+				var newPoints = Triangle.MakeThreePoints();
 
 				var brush = new SolidBrush(Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256)));
 
-				_triangles[i] = new Triangle(new Point[] { point1, point2, point3}, brush);
+				_triangles[i] = new Triangle(newPoints, brush);
 			}
 
 			_image = new Bitmap(width, height, PixelFormat.Format24bppRgb);
