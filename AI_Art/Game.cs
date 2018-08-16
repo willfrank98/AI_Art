@@ -49,7 +49,7 @@ namespace AI_Art
 				for (int j = 0; j < newTris.Length; j++)
 				{
 					//randomly choose the jth triangle from original image or generate new one
-					var rand = _masterRandom.NextDouble() * 150;
+					var rand = _masterRandom.NextDouble() * 200;
 					if (rand > 100)
 					{
 						//~1/(i + 1) chance for completely new triangle

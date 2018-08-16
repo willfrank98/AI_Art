@@ -15,3 +15,4 @@ These are independent variables that require further investigation/testing:
 -# of images
 -threshold (currently narrowed on 518 - 741)
 -likelyhood to generate random triangle when combining
+-new algorithm for comparing pixel byte data?
