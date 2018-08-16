@@ -48,41 +48,51 @@ namespace AI_Art
 				var newTris = new Triangle[_gameImages[i].GetTriangles().Length];
 				for (int j = 0; j < newTris.Length; j++)
 				{
-					//randomly choose the jth triangle from original image or generate new one
-					var rand = _masterRandom.NextDouble() * 200;
-					if (rand > 100)
-					{
-						//~1/(i + 1) chance for completely new triangle
-						newTris[j] = new Triangle();
-					}
-					else
-					{
-						//if reusing triangle, use generated wights to determine which one
-						for (int k = 0; k < combinePercents.Length; k++)
-						{
-							//iterate through each "percentage range"
-							if (rand < combinePercents[k])
-							{
-								//if j is not out of bounds add jth triangle from GameImage k
-								if (j < _gameImages[k].GetTriangles().Length)
-								{
-									newTris[j] = _gameImages[k].GetTriangle(j);
-								}
-								//if j is out of bounds, generate a new triangle
-								else
-								{
-									newTris[j] = new Triangle();
-								}
-								
-							}
-						}
-					}
+					//picks the next triangle for this new image
+					var nextTri = PickNextTriangle(combinePercents, j);
+					newTris[j] = nextTri;
 				}
 				//generate new ImageData from newTris
 				_gameImages[i] = new ImageData(i + 1, _targetImage.Height, _targetImage.Width, newTris);
 			}
 			//draw new images
 			Draw();
+		}
+
+		private Triangle PickNextTriangle(double[] combinePercents, int position)
+		{
+			Triangle nextTri = new Triangle();
+			//TODO: this
+			var rand = _masterRandom.NextDouble() * (400 / 3);
+			if (rand > 100)
+			{
+				//some chance for completely new triangle
+				nextTri = new Triangle(_masterRandom);
+			}
+			else
+			{
+				//if reusing triangle, use generated wights to determine which one
+				for (int k = 0; k < combinePercents.Length; k++)
+				{
+					//iterate through each "percentage range"
+					if (rand < combinePercents[k])
+					{
+						//if j is not out of bounds add jth triangle from GameImage k
+						if (position < _gameImages[k].GetTriangles().Length)
+						{
+							nextTri = _gameImages[k].GetTriangle(position);
+						}
+						//if j is out of bounds, pick a random triangle from a random image
+						else
+						{
+							var triangleIndex = _masterRandom.Next(_gameImages[k].GetTriangles().Length);
+							nextTri = _gameImages[k].GetTriangle(triangleIndex);
+						}
+					}
+				}
+			}
+
+			return nextTri;
 		}
 
 		/// <summary>

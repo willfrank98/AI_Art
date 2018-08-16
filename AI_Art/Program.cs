@@ -10,7 +10,7 @@ namespace AI_Art
 			//Console.Write("Enter a random seed: ");
 			var seed = /*Console.ReadLine();*/DateTime.Now.Millisecond.ToString()/*"Will"*/;
 			//Console.Write("How many images would you like to generate at once?: ");
-			var num = /*int.Parse(Console.ReadLine())*/20;
+			var num = /*int.Parse(Console.ReadLine())*/10;
 			var filepath = "C:\\Users\\Will\\Desktop\\MonaLisa.jpg";
 			var game = new Game(seed, num, filepath);
 

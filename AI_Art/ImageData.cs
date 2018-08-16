@@ -23,13 +23,13 @@ namespace AI_Art
 			_triangles = new Triangle[numberOfTriangles];
 			for (int i = 0; i < _triangles.Length; i++)
 			{
-				var newPoints = Triangle.MakeThreePoints();
+				var newPoints = Triangle.MakeThreePoints(rand);
 
 				var brush = new SolidBrush(Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256)));
 
 				_triangles[i] = new Triangle(newPoints, brush);
 			}
-
+			//TODO: algorithmically determine pixelformat
 			_image = new Bitmap(width, height, PixelFormat.Format24bppRgb);
 		}
 
@@ -57,7 +57,7 @@ namespace AI_Art
 				drawing.Save();
 			}
 
-			_image.Save($"image{_imageNumber}.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+			_image.Save($"image{_imageNumber}.jpeg", ImageFormat.Jpeg);
 			//_image.Dispose();
 		}
 

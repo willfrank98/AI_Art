@@ -19,20 +19,21 @@ namespace AI_Art
 			_brush = brush;
 		}
 
-		public Triangle()
+		public Triangle(Random rand)
 		{
-			Random rand = new Random(DateTime.Now.Millisecond);
-			var newPoints = MakeThreePoints();
+			var newPoints = MakeThreePoints(rand);
+			_points = newPoints;
 
 			var brush = new SolidBrush(Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256)));
-
-			_points = newPoints;
 			_brush = brush;
 		}
 
-		public static Point[] MakeThreePoints()
+		public Triangle()
 		{
-			Random rand = new Random(DateTime.Now.Millisecond);
+		}
+
+		public static Point[] MakeThreePoints(Random rand)
+		{
 			var tempX1 = rand.Next(0, 1920);
 			var tempY1 = rand.Next(0, 1920);
 			var point1 = new Point(tempX1, tempY1);
