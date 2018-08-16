@@ -35,44 +35,68 @@ namespace AI_Art
 			}
 		}
 
+		/// <summary>
+		/// Takes "percentage ranges" for each old image to generate new ones
+		/// </summary>
+		/// <param name="combinePercents">The "percentage ranges", an array of values where i's "range" is 0 to combinePercents[1] or combinePercents[i - 1] to combinePercents[i]</param>
 		public void CombineAndDraw(double[] combinePercents)
 		{
+			//for each original image
 			for (int i = 0; i < _gameImages.Length; i++)
 			{
+				//generate a list of new triangles
 				var newTris = new Triangle[_gameImages[i].GetTriangles().Length];
 				for (int j = 0; j < newTris.Length; j++)
 				{
-					var rand = _masterRandom.Next(110);
-
+					//randomly choose the jth triangle from original image or generate new one
+					var rand = _masterRandom.NextDouble() * 150;
 					if (rand > 100)
 					{
+						//~1/(i + 1) chance for completely new triangle
 						newTris[j] = new Triangle();
 					}
 					else
 					{
+						//if reusing triangle, use generated wights to determine which one
 						for (int k = 0; k < combinePercents.Length; k++)
 						{
+							//iterate through each "percentage range"
 							if (rand < combinePercents[k])
 							{
-								newTris[j] = _gameImages[i].GetTriangle(j);
+								//if j is not out of bounds add jth triangle from GameImage k
+								if (j < _gameImages[k].GetTriangles().Length)
+								{
+									newTris[j] = _gameImages[k].GetTriangle(j);
+								}
+								//if j is out of bounds, generate a new triangle
+								else
+								{
+									newTris[j] = new Triangle();
+								}
+								
 							}
 						}
 					}
 				}
-
+				//generate new ImageData from newTris
 				_gameImages[i] = new ImageData(i + 1, _targetImage.Height, _targetImage.Width, newTris);
 			}
-
+			//draw new images
 			Draw();
 		}
 
-		public double[] EvaluateFitness()
+		/// <summary>
+		/// Determines the fitness of each image
+		/// </summary>
+		/// <param name="threshold">A color difference less than this amount is considered a match, greater than or equal is not a match. This is done to help amplify differences in fitness.</param>
+		/// <returns>Array of doubles, input for CombineAndDraw</returns>
+		public double[] EvaluateFitness(int threshold)
 		{
 			double[] fitnessSums = new double[_gameImages.Length];
 
 			for (int i = 0; i < fitnessSums.Length; i++)
 			{
-				fitnessSums[i] = SingleImageFitness(_gameImages[i].GetImage());
+				fitnessSums[i] = SingleImageFitness(_gameImages[i].GetImage(), threshold);
 			}
 
 			var total = fitnessSums.Sum();
@@ -88,38 +112,53 @@ namespace AI_Art
 			return fitness;
 		}
 
-		private unsafe double SingleImageFitness(Image image)
+		private unsafe double SingleImageFitness(Image image, int threshold)
 		{
-			Bitmap b1 = new Bitmap(image);
-			BitmapData b1Data = b1.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, b1.PixelFormat);
+			Bitmap bImage = new Bitmap(image);
+			BitmapData bImageData = bImage.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, bImage.PixelFormat);
 
-			Bitmap b2 = new Bitmap(_targetImage);
-			BitmapData b2Data = b2.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, b2.PixelFormat);
+			Bitmap bTarget = new Bitmap(_targetImage);
+			BitmapData bTargetData = bTarget.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, bTarget.PixelFormat);
 
-			byte bitsPerPixel = GetBitsPerPixel(b1Data.PixelFormat);
+			byte bitsPerPixel = GetBitsPerPixel(bImageData.PixelFormat);
 
-			byte* scan0 = (byte*)b1Data.Scan0.ToPointer();
-			byte* scan1 = (byte*)b2Data.Scan0.ToPointer();
+			byte* scanImage = (byte*)bImageData.Scan0.ToPointer();
+			byte* scanTarget = (byte*)bTargetData.Scan0.ToPointer();
 
-			double totalFitness = 0;
+			double imageFitness = 0;
 
-			for (int i = 0; i < b1Data.Height; ++i)
+			for (int i = 0; i < bImageData.Height; ++i)
 			{
-				for (int j = 0; j < b1Data.Width; ++j)
+				for (int j = 0; j < bImageData.Width; ++j)
 				{
-					byte* data1 = scan0 + i * b1Data.Stride + j * bitsPerPixel / 8;
-					byte* data2 = scan1 + i * b2Data.Stride + j * bitsPerPixel / 8;
+					byte* data1 = scanImage + i * bImageData.Stride + j * bitsPerPixel / 8;
+					byte* data2 = scanTarget + i * bTargetData.Stride + j * bitsPerPixel / 8;
 
-					totalFitness += Math.Abs(data2[0] - data1[0]);
-					totalFitness += Math.Abs(data2[1] - data1[1]);
-					totalFitness += Math.Abs(data2[2] - data1[2]);
+					var colorDifference = Math.Abs(data2[0] - data1[0]) + Math.Abs(data2[1] - data1[1]) + Math.Abs(data2[2] - data1[2]);
+
+					//TODO: investigate image drawing here
+					if (colorDifference > threshold)
+					{
+						imageFitness++;
+						//set match pixels to black, for fun testing
+						//data1[0] = 255;
+						//data1[1] = 255;
+						//data1[2] = 255;
+					}
+					else
+					{
+						//set non match pixels to white, for fun testing
+						//data1[0] = 0;
+						//data1[1] = 0;
+						//data1[2] = 0;
+					}
 				}
 			}
 
-			b1.UnlockBits(b1Data);
-			b2.UnlockBits(b2Data);
+			bImage.UnlockBits(bImageData);
+			bTarget.UnlockBits(bTargetData);
 
-			return totalFitness;
+			return imageFitness;
 		}
 
 		private byte GetBitsPerPixel(PixelFormat pixelFormat)

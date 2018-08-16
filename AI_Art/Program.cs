@@ -8,33 +8,26 @@ namespace AI_Art
 		static void Main(string[] args)
 		{
 			//Console.Write("Enter a random seed: ");
-			var seed = /*Console.ReadLine();*/"Will";
+			var seed = /*Console.ReadLine();*/DateTime.Now.Millisecond.ToString()/*"Will"*/;
 			//Console.Write("How many images would you like to generate at once?: ");
-			//var num = /*int.Parse(Console.ReadLine())*/ 10;
-			var num = 10;
+			var num = /*int.Parse(Console.ReadLine())*/20;
 			var filepath = "C:\\Users\\Will\\Desktop\\MonaLisa.jpg";
 			var game = new Game(seed, num, filepath);
 
 			game.Draw();
 
-			while (true)
+			for (int i = 0; i <= 768; i++)
 			{
-				//Console.Write("Enter your 3 favorite images, from most to least (1-9), seperated by commas: ");
-				//int[] toCombine = new int[3];
-				//var temp = Console.ReadLine().Split(',');
+				double[] matchPercents = game.EvaluateFitness(741);
 
-				//if (temp[0].Equals("done", StringComparison.OrdinalIgnoreCase)) return;
-
-				//for (int i = 0; i < 3; i++)
-				//{
-				//	toCombine[i] = int.Parse(temp[i]);
-				//}
-
-				double[] matchPercents = game.EvaluateFitness();
+				var totalDeviance = 0.0;
+				for (int j = 0; j < matchPercents.Length; j++)
+				{
+					totalDeviance += Math.Abs(matchPercents[j] - (j + 1) * (100 / matchPercents.Length));
+				}
 				game.CombineAndDraw(matchPercents);
 
-				//int[] toCombine = { 1, 2, 3 };
-				//game.CombineAndDraw(toCombine);
+				Console.WriteLine("Threshold: " + i + "\t\tTotal Deviance: " + totalDeviance);
 			}
 		}
 	}

@@ -7,7 +7,7 @@ namespace AI_Art
 {
 	internal class ImageData
 	{
-		private readonly int MAX_LENGTH = 500;
+		private readonly int MAX_LENGTH = 250;
 		private Triangle[] _triangles;
 		private int _imageNumber;
 
@@ -17,10 +17,10 @@ namespace AI_Art
 		{
 			_imageNumber = imageNumber;
 
-			int num = rand.Next(50, 100);
-			//int num = 50;
+			//TODO: investigate possible conflicting code?
+			int numberOfTriangles = rand.Next(100, 125);
 
-			_triangles = new Triangle[num];
+			_triangles = new Triangle[numberOfTriangles];
 			for (int i = 0; i < _triangles.Length; i++)
 			{
 				var tempX1 = rand.Next(0, 1920);
