@@ -2,10 +2,11 @@
 There's not really any AI here, but that's a whole other thing.
 
 ### Todo:  
--properly dispose resources
+-properly dispose resources, increase performance
+-better generational structure
 
 ### Ideas:
--create a relatively simple data type that holds all information needed to generate an image (the dna of an image)
+-create a relatively simple data type that holds all information needed to generate an image (the dna of an image)  
 
 ### List of Known Variables:
 These are independent variables that require further investigation/testing:  

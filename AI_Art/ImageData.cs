@@ -17,13 +17,12 @@ namespace AI_Art
 		{
 			_imageNumber = imageNumber;
 
-			//TODO: investigate possible conflicting code?
-			int numberOfTriangles = rand.Next(300, 350);
+			int numberOfTriangles = rand.Next(350, 350);
 
 			_triangles = new Triangle[numberOfTriangles];
 			for (int i = 0; i < _triangles.Length; i++)
 			{
-				var newPoints = Triangle.MakeThreePoints(rand);
+				var newPoints = Triangle.MakeThreePoints(rand, height, width);
 
 				var brush = new SolidBrush(Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256)));
 

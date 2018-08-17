@@ -63,11 +63,11 @@ namespace AI_Art
 		{
 			Triangle nextTri = new Triangle();
 			//TODO: this
-			var rand = _masterRandom.NextDouble() * (400 / 3);
+			var rand = _masterRandom.NextDouble() * 101;
 			if (rand > 100)
 			{
 				//some chance for completely new triangle
-				nextTri = new Triangle(_masterRandom);
+				nextTri = new Triangle(_masterRandom, _targetImage.Width, _targetImage.Height);
 			}
 			else
 			{

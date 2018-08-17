@@ -19,9 +19,9 @@ namespace AI_Art
 			_brush = brush;
 		}
 
-		public Triangle(Random rand)
+		public Triangle(Random rand, int height, int weight)
 		{
-			var newPoints = MakeThreePoints(rand);
+			var newPoints = MakeThreePoints(rand, height, weight);
 			_points = newPoints;
 
 			var brush = new SolidBrush(Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256)));
@@ -32,10 +32,10 @@ namespace AI_Art
 		{
 		}
 
-		public static Point[] MakeThreePoints(Random rand)
+		public static Point[] MakeThreePoints(Random rand, int height, int width)
 		{
-			var tempX1 = rand.Next(0, 1920);
-			var tempY1 = rand.Next(0, 1920);
+			var tempX1 = rand.Next(0, width);
+			var tempY1 = rand.Next(0, height);
 			var point1 = new Point(tempX1, tempY1);
 
 			var tempX2 = rand.Next((MAX_LENGTH - MIN_LENGTH) * 2);
