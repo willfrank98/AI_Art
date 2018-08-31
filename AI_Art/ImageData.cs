@@ -17,7 +17,7 @@ namespace AI_Art
 		{
 			_imageNumber = imageNumber;
 
-			int numberOfTriangles = rand.Next(350, 350);
+			int numberOfTriangles = 500/*rand.Next(350, 350)*/;
 
 			_triangles = new Triangle[numberOfTriangles];
 			for (int i = 0; i < _triangles.Length; i++)

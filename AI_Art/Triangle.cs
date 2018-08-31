@@ -8,8 +8,8 @@ namespace AI_Art
 {
 	class Triangle
 	{
-		private static int MAX_LENGTH = 200;
-		private static int MIN_LENGTH = 100;
+		private static int MAX_LENGTH = 100;
+		private static int MIN_LENGTH = 50;
 		public Point[] _points;
 		public Brush _brush;
 

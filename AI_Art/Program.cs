@@ -18,7 +18,8 @@ namespace AI_Art
 
 			for (int i = 0; i <= 768; i++)
 			{
-				double[] matchPercents = game.EvaluateFitness(741);
+				int threshold = 500;
+				double[] matchPercents = game.EvaluateFitness(threshold);
 
 				//TODO: take the totalDeviance into account to amplify small differences when deviance is low
 				var totalDeviance = 0.0;
