@@ -15,7 +15,7 @@ namespace AI_Art
 		private int width;
 		private Image image;
 		private Triangle[] tris;
-		private long[] fitness;
+		private double[] fitness;
 
 		public TriangleImage(int seed, string filepath)
 		{
@@ -47,30 +47,39 @@ namespace AI_Art
 			byte* scanImage = (byte*)bData.Scan0.ToPointer();
 
 			//evaluate triangles
-			long[] fitness = new long[tris.Length];
+			double[] fitness = new double[tris.Length];
 
+			//int i = 0;
+			//foreach (Triangle triangle in tris.AsParallel())
 			for (int i = 0; i < tris.Length; i++)
 			{
 				foreach (Point point in PointsInTriangle(tris[i]._points[0], tris[i]._points[1], tris[i]._points[2]))
 				{
 					if (point.X >= 0 && point.X < image.Width && point.Y >= 0 && point.Y < image.Height)
 					{
-						byte* data = scanImage + point.X * bData.Stride + point.Y * bitsPerPixel / 8;
+						byte* data = scanImage + point.Y * bData.Stride + point.X * bitsPerPixel / 8;
 
 						//higher fitness = better
 						Color color = ((SolidBrush)tris[i]._brush).Color;
-						fitness[i] += 255 - Math.Abs(data[0] - color.B);
-						fitness[i] += 255 - Math.Abs(data[1] - color.R);
-						fitness[i] += 255 - Math.Abs(data[2] - color.G);
+						fitness[i] += Math.Pow(1.02, 255 - Math.Abs(data[0] - color.B));
+						fitness[i] += Math.Pow(1.02, 255 - Math.Abs(data[1] - color.R));
+						fitness[i] += Math.Pow(1.02, 255 - Math.Abs(data[2] - color.G));
 					}
 				}
 
 				tris[i]._fitness = fitness[i];
+
+				if (i % 1000 == 0)
+				{
+					Console.WriteLine($"Doing: {i}");
+				}
 			}
 
 			this.fitness = fitness;
 			Array.Sort(fitness, tris);
 		}
+
+		//make eval that rewards 
 
 		/* code I found, https://stackoverflow.com/questions/11075505/get-all-points-within-a-triangle */
 

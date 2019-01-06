@@ -10,7 +10,7 @@ namespace AI_Art
 	{
 		public Point[] _points;
 		public Brush _brush;
-		public long _fitness;
+		public double _fitness;
 
 		public Triangle(Point[] points, Brush brush)
 		{

@@ -10,34 +10,14 @@ namespace AI_Art
 			//Console.Write("Enter a random seed: ");
 			var seed = /*Console.ReadLine();*/DateTime.Now.Millisecond.GetHashCode();/*"Will"*/;
 			//Console.Write("How many images would you like to generate at once?: ");
-			var num = 10000;
+			var num = 1000000;
 			var filepath = "MonaLisa.jpg";
 
 			var t = new TriangleImage(seed, filepath);
 
-			t.NewBatch(num, 10, 50);
+			t.NewBatch(num, 10, 30);
 			t.EvaluateFitness();
-			t.Draw(2000);
-
-			//var game = new Game(seed, num, filepath);
-
-			//game.Draw();
-
-			//for (int i = 0; i <= 768; i++)
-			//{
-			//	int threshold = 500;
-			//	double[] matchPercents = game.EvaluateFitness(threshold);
-
-			//	//TODO: take the totalDeviance into account to amplify small differences when deviance is low
-			//	var totalDeviance = 0.0;
-			//	for (int j = 0; j < matchPercents.Length; j++)
-			//	{
-			//		totalDeviance += Math.Abs(matchPercents[j] - (j + 1) * (100 / matchPercents.Length));
-			//	}
-			//	game.CombineAndDraw(matchPercents);
-
-			//	Console.WriteLine("Threshold: " + i + "\t\tTotal Deviance: " + totalDeviance);
-			//}
+			t.Draw(100000);
 		}
 	}
 }
