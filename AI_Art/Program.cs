@@ -8,14 +8,16 @@ namespace AI_Art
 		static void Main(string[] args)
 		{
 			//Console.Write("Enter a random seed: ");
-			var seed = /*Console.ReadLine();*/DateTime.Now.Millisecond;/*"Will"*/;
+			var seed = /*Console.ReadLine();*/DateTime.Now.Millisecond.GetHashCode();/*"Will"*/;
 			//Console.Write("How many images would you like to generate at once?: ");
-			var num = 20;
-			var filepath = "C:\\Users\\Will\\Desktop\\MonaLisa.jpg";
+			var num = 10000;
+			var filepath = "MonaLisa.jpg";
 
 			var t = new TriangleImage(seed, filepath);
 
-			t.NewBatch(num);
+			t.NewBatch(num, 10, 50);
+			t.EvaluateFitness();
+			t.Draw(2000);
 
 			//var game = new Game(seed, num, filepath);
 

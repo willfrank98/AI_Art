@@ -10,6 +10,7 @@ namespace AI_Art
 	{
 		public Point[] _points;
 		public Brush _brush;
+		public long _fitness;
 
 		public Triangle(Point[] points, Brush brush)
 		{
@@ -46,8 +47,8 @@ namespace AI_Art
 				throw new ArgumentOutOfRangeException("minLength", "minLength cannpt be greater than maxLength");
 			}
 
-			var tempX1 = rand.Next(0, width);
-			var tempY1 = rand.Next(0, height);
+			var tempX1 = rand.Next(minLength / 2, width - minLength / 2);
+			var tempY1 = rand.Next(minLength / 2, height - minLength / 2);
 			var point1 = new Point(tempX1, tempY1);
 
 			var tempX2 = rand.Next((maxLength - minLength) * 2);
