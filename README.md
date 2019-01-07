@@ -16,6 +16,12 @@ Seed (int): Provide a random seed
 ## Examples
 Generated with: ./AI_Art MonaLisa.jpg MonaLisa-Out.bmp 2000000 5 30 3 50000 Will  
 ![](Examples/MonaLisa-Out.bmp)  
+
+Generated with: ./AI_Art PearlEarring.jpg PearlEarring-Out.bmp 2000000 5 30 3 50000 Will  
+![](Examples/PearlEarring-Out.bmp)
+
+Generated with: ./AI_Art LastSupper.jpg LastSupper-Out.bmp 2000000 5 10 1 100000 Will  
+![](Examples/PearlEarring-Out.bmp)
  
 ## Todo
 1. General performace optimizations
