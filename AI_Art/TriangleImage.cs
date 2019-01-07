@@ -73,7 +73,7 @@ namespace AI_Art
 					}
 				}
 
-				fitness[i] = fitness[i] / Math.Pow(pixels, .5);
+				fitness[i] = fitness[i] / Math.Pow(pixels, .6);
 
 				tris[i]._fitness = fitness[i];
 

@@ -57,14 +57,14 @@ namespace AI_Art
 				if (string.Equals(args[0], "-hc"))
 				{
 					args = new string[8];
-					args[0] = "MonaLisa.jpg";   //source file
-					args[1] = "image.bmp";      //destination file
-					args[2] = "2000000";        //number to generate
-					args[3] = "5";              //min side length
-					args[4] = "30";             //max side length
-					args[5] = "3";              //granularity to evaluate at
-					args[6] = "50000";          //number to draw
-					args[7] = DateTime.Now.Millisecond.ToString(); //random seed
+					fileIn = "LastSupper.jpg";			//source file
+					fileOut = "LastSupper-Out.bmp";		//destination file
+					num = 2000000;						//number to generate
+					minLength = 5;						//min side length
+					maxLength = 10;						//max side length
+					granularity = 1;					//granularity to evaluate at
+					drawNum = 100000;					//number to draw
+					seed = DateTime.Now.Millisecond;	//random seed
 				}
 				else
 				{
