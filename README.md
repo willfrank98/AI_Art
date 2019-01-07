@@ -12,6 +12,10 @@ MaxLength (int): The maximum side length for triangles
 Granularity (int): The granularity to evaluate each triangle at  
 DrawNum (int): The number of triangle to draw onto the final image  
 Seed (int): Provide a random seed  
+
+## Examples
+Generated with: ./AI_Art MonaLisa.jpg MonaLisa-Out.bmp 2000000 5 30 3 50000 Will  
+![](Examples/MonaLisa-Out.bmp)  
  
 ## Todo
 1. General performace optimizations
