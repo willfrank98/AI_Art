@@ -52,7 +52,7 @@ namespace AI_Art
 					return 1;
 				}
 			}
-			else if (args.Length >= 1)
+			else if (args.Length == 1)
 			{
 				if (string.Equals(args[0], "-hc"))
 				{
@@ -70,7 +70,9 @@ namespace AI_Art
 				{
 					Console.WriteLine("Invalid Args!");
 				}
-
+			}
+			else
+			{ 
 				fileIn = args[0];
 				fileOut = args[1];
 
