@@ -67,13 +67,13 @@ namespace AI_Art
 						//higher fitness = better
 						Color color = ((SolidBrush)tris[i]._brush).Color;
 						fitness[i] += Math.Pow(1.03, 255 - Math.Abs(data[0] - color.B));
-						fitness[i] += Math.Pow(1.03, 255 - Math.Abs(data[1] - color.R));
-						fitness[i] += Math.Pow(1.03, 255 - Math.Abs(data[2] - color.G));
+						fitness[i] += Math.Pow(1.03, 255 - Math.Abs(data[1] - color.G));
+						fitness[i] += Math.Pow(1.03, 255 - Math.Abs(data[2] - color.R));
 						pixels++;
 					}
 				}
 
-				fitness[i] = fitness[i] / Math.Pow(pixels, .6);
+				fitness[i] = fitness[i] / Math.Pow(pixels, .5);
 
 				tris[i]._fitness = fitness[i];
 
