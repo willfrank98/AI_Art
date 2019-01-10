@@ -15,6 +15,8 @@ namespace AI_Art
 			int granularity = 0;
 			int drawNum = 0;
 			int seed = 0;
+
+			// run with no command line args to be prompted for input
 			if (args.Length == 0)
 			{
 				Console.WriteLine("Enter input file: ");
@@ -54,11 +56,11 @@ namespace AI_Art
 			}
 			else if (args.Length == 1)
 			{
-				if (string.Equals(args[0], "-hc"))
+				if (string.Equals(args[0], "-hc"))	// -hc to use hardcoded values
 				{
 					args = new string[8];
-					fileIn = "PearlEarring.jpg";			//source file
-					fileOut = "PearlEarring-Out.bmp";		//destination file
+					fileIn = "PearlEarring.jpg";		//source file
+					fileOut = "PearlEarring-Out.bmp";	//destination file
 					num = 2000000;						//number to generate
 					minLength = 5;						//min side length
 					maxLength = 30;						//max side length
@@ -71,7 +73,7 @@ namespace AI_Art
 					Console.WriteLine("Invalid Args!");
 				}
 			}
-			else
+			else // see README.md for more info about command line args
 			{ 
 				fileIn = args[0];
 				fileOut = args[1];
@@ -108,16 +110,18 @@ namespace AI_Art
 
 				seed = args[7].GetHashCode();
 			}
-			
 
-			var t = new TriangleImage(seed, fileIn);
+			// loads the image to be recreated
+			TriangleImage image = new TriangleImage(seed, fileIn);
 
+			// starts a timer, just for testing
+			// TODO: add option to not time
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
 
-			t.NewBatch(num, minLength, maxLength);
-			t.EvaluateFitnessExactMatch(granularity);
-			t.Draw(drawNum, fileOut);
+			image.NewBatch(num, minLength, maxLength);
+			image.EvaluateFitness(granularity);
+			image.Draw(drawNum, fileOut);
 
 			timer.Stop();
 

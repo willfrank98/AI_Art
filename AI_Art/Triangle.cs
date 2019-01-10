@@ -7,7 +7,6 @@ namespace AI_Art
 	{
 		public Point[] _points;
 		public Brush _brush;
-		public double _fitness;
 
 		public Triangle(Point[] points, Brush brush)
 		{

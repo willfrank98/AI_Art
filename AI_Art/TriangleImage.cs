@@ -14,6 +14,11 @@ namespace AI_Art
 		private Triangle[] tris;
 		private double[] fitness;
 
+		/// <summary>
+		/// Initializer
+		/// </summary>
+		/// <param name="seed">The random seed from which all triangles are generated</param>
+		/// <param name="filepath">Path to the image to be recreated</param>
 		public TriangleImage(int seed, string filepath)
 		{
 			rand = new Random(seed);
@@ -24,6 +29,12 @@ namespace AI_Art
 			image = temp;
 		}
 
+		/// <summary>
+		/// Creates a new batch of random triangles
+		/// </summary>
+		/// <param name="num">Number of triangles to generate</param>
+		/// <param name="minLength">Minimum side length of the triangles</param>
+		/// <param name="maxLength">Maximum side length of the triangles</param>
 		public void NewBatch(int num, int minLength, int maxLength)
 		{
 			tris = new Triangle[num];
@@ -41,7 +52,12 @@ namespace AI_Art
 			}
 		}
 
-		public unsafe void EvaluateFitnessExactMatch(int granularity)
+		/// <summary>
+		/// Evaluates all generated triangles for fitness
+		/// </summary>
+		/// <param name="granularity">The level of granularity to evaulate the triangles (how many pixels per triangle are looked at),
+		///							  directly affects performance</param>
+		public unsafe void EvaluateFitness(int granularity)
 		{
 			//open image
 			Bitmap b = new Bitmap(image);
@@ -75,8 +91,6 @@ namespace AI_Art
 
 				fitness[i] = fitness[i] / Math.Pow(pixels, .5);
 
-				tris[i]._fitness = fitness[i];
-
 				if (i % onePercent == 0)
 				{
 					decimal percent = decimal.Divide(i, tris.Length) * 100;
@@ -89,75 +103,11 @@ namespace AI_Art
 			Array.Sort(fitness, tris);
 		}
 
-		//public unsafe void EvaluateFitnessLowVarience()
-		//{
-		//	//open image
-		//	Bitmap b = new Bitmap(image);
-		//	BitmapData bData = b.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, b.PixelFormat);
-
-		//	byte bitsPerPixel = GetBitsPerPixel(bData.PixelFormat);
-
-		//	byte* scanImage = (byte*)bData.Scan0.ToPointer();
-
-		//	//evaluate triangles
-		//	double[] fitness = new double[tris.Length];
-
-		//	//int i = 0;
-		//	//foreach (Triangle triangle in tris.AsParallel())
-		//	for (int i = 0; i < tris.Length; i++)
-		//	{
-		//		int totalDiff = 0;
-		//		int n = 0;
-		//		foreach (Point point in PointsInTriangle(tris[i]._points[0], tris[i]._points[1], tris[i]._points[2]))
-		//		{
-		//			if (point.X >= 0 && point.X < image.Width && point.Y >= 0 && point.Y < image.Height)
-		//			{
-		//				byte* data = scanImage + point.Y * bData.Stride + point.X * bitsPerPixel / 8;
-
-		//				Color color = ((SolidBrush)tris[i]._brush).Color;
-		//				totalDiff += 255 - Math.Abs(data[0] - color.B);
-		//				totalDiff += 255 - Math.Abs(data[1] - color.R);
-		//				totalDiff += 255 - Math.Abs(data[2] - color.G);
-		//				n++;
-		//			}
-		//		}
-
-		//		double avgDiff = (double)totalDiff / (double)n;
-
-		//		foreach (Point point in PointsInTriangle(tris[i]._points[0], tris[i]._points[1], tris[i]._points[2], ))
-		//		{
-		//			if (point.X >= 0 && point.X < image.Width && point.Y >= 0 && point.Y < image.Height)
-		//			{
-		//				byte* data = scanImage + point.Y * bData.Stride + point.X * bitsPerPixel / 8;
-
-		//				Color color = ((SolidBrush)tris[i]._brush).Color;
-		//				double tempFit = 0;
-		//				tempFit += 255 - Math.Abs(data[0] - color.B);
-		//				tempFit += 255 - Math.Abs(data[1] - color.R);
-		//				tempFit += 255 - Math.Abs(data[2] - color.G);
-		//				fitness[i] = -Math.Abs(avgDiff - tempFit);
-		//			}
-		//		}
-
-
-		//		tris[i]._fitness = fitness[i];
-
-
-		//		if (i % 1000 == 0)
-		//		{
-		//			Console.WriteLine($"Evaluating: {i/tris.Length}%");
-		//		}
-		//	}
-
-		//	this.fitness = fitness;
-		//	Array.Sort(fitness, tris);
-		//}
-
-		//make eval that rewards 
 
 		/* code I found at https://stackoverflow.com/questions/11075505/get-all-points-within-a-triangle, slightly modified */
 
-		public IEnumerable<Point> PointsInTriangle(Point pt1, Point pt2, Point pt3, int granularity)
+		// Enumerates all points in triangle described by the given three points at the given level of granularity
+		private IEnumerable<Point> PointsInTriangle(Point pt1, Point pt2, Point pt3, int granularity)
 		{
 			if (pt1.Y == pt2.Y && pt1.Y == pt3.Y)
 			{
@@ -243,6 +193,12 @@ namespace AI_Art
 
 		/* end of found code */
 
+
+		/// <summary>
+		/// Draws a certain number of the evaluated triangles.
+		/// </summary>
+		/// <param name="thisMany">How many of the top triangles to draw.</param>
+		/// <param name="imageOut">Filepath for output image.</param>
 		public void Draw(int thisMany, string imageOut)
 		{
 			using (var drawing = Graphics.FromImage(image))
@@ -270,6 +226,7 @@ namespace AI_Art
 			image.Dispose();
 		}
 
+		// gets the bits per pixel, used for pointer math in images
 		private byte GetBitsPerPixel(PixelFormat pixelFormat)
 		{
 			switch (pixelFormat)
