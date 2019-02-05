@@ -116,18 +116,20 @@ namespace AI_Art
 
 			// starts a timer, just for testing
 			// TODO: add option to not time
-			Stopwatch timer = new Stopwatch();
-			timer.Start();
+			//Stopwatch timer = new Stopwatch();
+			//timer.Start();
 
 			image.NewBatch(num, minLength, maxLength);
 			image.EvaluateFitness(granularity);
 			image.Draw(drawNum, fileOut);
 
-			timer.Stop();
 
-			TimeSpan ts = timer.Elapsed;
-			string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds,	ts.Milliseconds / 10);
-			Console.WriteLine($"Finished in {elapsedTime}.");
+
+			//timer.Stop();
+
+			//TimeSpan ts = timer.Elapsed;
+			//string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds,	ts.Milliseconds / 10);
+			//Console.WriteLine($"Finished in {elapsedTime}.");
 			return 0;
 		}
 	}
