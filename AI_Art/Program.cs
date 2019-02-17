@@ -30,43 +30,45 @@ namespace AI_Art
 					return 1;
 				}
 				Console.WriteLine("Enter minimum side length: ");
-				if (!int.TryParse(args[3], out minLength))
+				if (!int.TryParse(Console.ReadLine(), out minLength))
 				{
 					Console.WriteLine("Invalid input!");
 					return 1;
 				}
 				Console.WriteLine("Enter maximum side length: ");
-				if (!int.TryParse(args[4], out maxLength))
+				if (!int.TryParse(Console.ReadLine(), out maxLength))
 				{
 					Console.WriteLine("Invalid input!");
 					return 1;
 				}
 				Console.WriteLine("Enter granularity level: ");
-				if (!int.TryParse(args[5], out granularity))
+				if (!int.TryParse(Console.ReadLine(), out granularity))
 				{
 					Console.WriteLine("Invalid input!");
 					return 1;
 				}
-				Console.WriteLine("Enter number of triangles to generate: ");
-				if (!int.TryParse(args[6], out drawNum))
+				Console.WriteLine("Enter number of triangles to draw: ");
+				if (!int.TryParse(Console.ReadLine(), out drawNum))
 				{
 					Console.WriteLine("Invalid input!");
 					return 1;
 				}
+				Console.WriteLine("Enter a seed for RNG: ");
+				seed = Console.ReadLine().GetHashCode();
 			}
 			else if (args.Length == 1)
 			{
 				if (string.Equals(args[0], "-hc"))	// -hc to use hardcoded values
 				{
 					args = new string[8];
-					fileIn = "PearlEarring.jpg";		//source file
-					fileOut = "PearlEarring-Out.bmp";	//destination file
-					num = 2000000;						//number to generate
+					fileIn = "LastSupper.jpg";			//source file
+					fileOut = "LastSupper-Out.bmp";		//destination file
+					num = 1000000;						//number to generate
 					minLength = 5;						//min side length
-					maxLength = 30;						//max side length
+					maxLength = 15;						//max side length
 					granularity = 3;					//granularity to evaluate at
-					drawNum = 50000;					//number to draw
-					seed = DateTime.Now.Millisecond;	//random seed
+					drawNum = 100000;					//number to draw
+					seed = "Will".GetHashCode();		//random seed
 				}
 				else
 				{
