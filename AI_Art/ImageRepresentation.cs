@@ -5,13 +5,13 @@ using System.Drawing.Imaging;
 
 namespace AI_Art
 {
-	class TriangleImage
+	class ImageRepresentation
 	{
-		private Random rand;
+		//private Random rand;
 		private int height;
 		private int width;
 		private Image image;
-		private Triangle[] tris;
+		private Shape[] shapes;
 		private double[] fitness;
 
 		/// <summary>
@@ -19,9 +19,9 @@ namespace AI_Art
 		/// </summary>
 		/// <param name="seed">The random seed from which all triangles are generated</param>
 		/// <param name="filepath">Path to the image to be recreated</param>
-		public TriangleImage(int seed, string filepath)
+		public ImageRepresentation(string filepath)
 		{
-			rand = new Random(seed);
+			//rand = new Random(seed);
 
 			Image temp = new Bitmap(filepath);
 			height = temp.Height;
@@ -35,17 +35,26 @@ namespace AI_Art
 		/// <param name="num">Number of triangles to generate</param>
 		/// <param name="minLength">Minimum side length of the triangles</param>
 		/// <param name="maxLength">Maximum side length of the triangles</param>
-		public void NewBatch(int num, int minLength, int maxLength)
+		public void NewBatch(int num, List<string> parameters)
 		{
-			tris = new Triangle[num];
+			switch (int.Parse(parameters[0]))
+			{
+				case 0:
+					shapes = new Triangle[num];
+					break;
+				case 1:
+					shapes = new ImageShape[num];
+					break;
+			}
+
 			int onePercent = num / 100;
 			for (int i = 0; i < num; i++)
 			{
-				tris[i] = new Triangle(rand, height, width, minLength, maxLength);
+				shapes[i].GenerateShape(parameters);
 
 				if (i % onePercent == 0)
 				{
-					decimal percent = decimal.Divide(i, tris.Length) * 100;
+					decimal percent = decimal.Divide(i, shapes.Length) * 100;
 					Console.SetCursorPosition(0, 0);
 					Console.WriteLine("Generating: {0:0}%", percent);
 				}
@@ -68,18 +77,18 @@ namespace AI_Art
 			byte* scanImage = (byte*)bData.Scan0.ToPointer();
 
 			//evaluate triangles
-			double[] fitness = new double[tris.Length];
+			double[] fitness = new double[shapes.Length];
 
-			int onePercent = tris.Length / 100;
-			for (int i = 0; i < tris.Length; i++)
+			int onePercent = shapes.Length / 100;
+			for (int i = 0; i < shapes.Length; i++)
 			{
 				int pixels = 0;
-				foreach (Point point in PointsInTriangle(tris[i]._points[0], tris[i]._points[1], tris[i]._points[2], granularity))
+				foreach (Point point in shapes[i].InteratePoints(granularity))
 				{
 					if (point.X >= 0 && point.X < image.Width && point.Y >= 0 && point.Y < image.Height)
 					{
 						byte* data = scanImage + point.Y * bData.Stride + point.X * bitsPerPixel / 8;
-						Color color = ((SolidBrush)tris[i]._brush).Color;
+						Color color = shapes[i].GetColorAtPoint(point);
 
 						double[] c1 = { data[2] / 255.0, data[1] / 255.0, data[0] / 255.0 };
 						double[] c2 = { color.R / 255.0, color.G / 255.0, color.B / 255.0 };
@@ -105,14 +114,14 @@ namespace AI_Art
 
 				if (i % onePercent == 0)
 				{
-					decimal percent = decimal.Divide(i, tris.Length) * 100;
+					decimal percent = decimal.Divide(i, shapes.Length) * 100;
 					Console.SetCursorPosition(0, 1);
 					Console.WriteLine("Evaluating: {0:0}%", percent);
 				}
 			}
 
 			this.fitness = fitness;
-			Array.Sort(fitness, tris);
+			Array.Sort(fitness, shapes);
 		}
 
 		private double[] RGBtoXYZ(double[] c)
@@ -178,103 +187,12 @@ namespace AI_Art
 			return Lab;
 		}
 
-
-		/* code I found at https://stackoverflow.com/questions/11075505/get-all-points-within-a-triangle, slightly modified */
-
-		// Enumerates all points in triangle described by the given three points at the given level of granularity
-		private IEnumerable<Point> PointsInTriangle(Point pt1, Point pt2, Point pt3, int granularity)
-		{
-			if (pt1.Y == pt2.Y && pt1.Y == pt3.Y)
-			{
-				throw new ArgumentException("The given points must form a triangle.");
-			}
-
-			Point tmp;
-
-			if (pt2.X < pt1.X)
-			{
-				tmp = pt1;
-				pt1 = pt2;
-				pt2 = tmp;
-			}
-
-			if (pt3.X < pt2.X)
-			{
-				tmp = pt2;
-				pt2 = pt3;
-				pt3 = tmp;
-
-				if (pt2.X < pt1.X)
-				{
-					tmp = pt1;
-					pt1 = pt2;
-					pt2 = tmp;
-				}
-			}
-
-			var baseFunc = CreateFunc(pt1, pt3);
-			var line1Func = pt1.X == pt2.X ? (x => pt2.Y) : CreateFunc(pt1, pt2);
-
-			for (var x = pt1.X; x < pt2.X; x += granularity)
-			{
-				int maxY;
-				int minY = GetRange(line1Func(x), baseFunc(x), out maxY);
-
-				for (var y = minY; y <= maxY; y += granularity)
-				{
-					yield return new Point(x, y);
-				}
-			}
-
-			var line2Func = pt2.X == pt3.X ? (x => pt2.Y) : CreateFunc(pt2, pt3);
-
-			for (var x = pt2.X; x <= pt3.X; x += granularity)
-			{
-				int maxY;
-				int minY = GetRange(line2Func(x), baseFunc(x), out maxY);
-
-				for (var y = minY; y <= maxY; y += granularity)
-				{
-					yield return new Point(x, y);
-				}
-			}
-		}
-
-		private int GetRange(double y1, double y2, out int maxY)
-		{
-			if (y1 < y2)
-			{
-				maxY = (int)Math.Floor(y2);
-				return (int)Math.Ceiling(y1);
-			}
-
-			maxY = (int)Math.Floor(y1);
-			return (int)Math.Ceiling(y2);
-		}
-
-		private Func<int, double> CreateFunc(Point pt1, Point pt2)
-		{
-			var y0 = pt1.Y;
-
-			if (y0 == pt2.Y)
-			{
-				return x => y0;
-			}
-
-			var m = (double)(pt2.Y - y0) / (pt2.X - pt1.X);
-
-			return x => m * (x - pt1.X) + y0;
-		}
-
-		/* end of found code */
-
-
 		/// <summary>
 		/// Draws a certain number of the evaluated triangles.
 		/// </summary>
 		/// <param name="thisMany">How many of the top triangles to draw.</param>
 		/// <param name="imageOut">Filepath for output image.</param>
-		public void Draw(int thisMany, string imageOut)
+		public void Draw(int thisMany, int imageType, string imageOut)
 		{
 			using (var drawing = Graphics.FromImage(image))
 			{
@@ -282,14 +200,23 @@ namespace AI_Art
 
 				//draws the top ranking thisMany triangles, from worst to best
 				int onePercent = thisMany / 100;
-				for (int i = tris.Length - thisMany; i < tris.Length; i++)
+				for (int i = shapes.Length - thisMany; i < shapes.Length; i++)
 				{
-					Triangle triangle = tris[i];
-					drawing.FillPolygon(triangle._brush, triangle._points);
+					Shape shape = shapes[i];
+					switch (imageType)
+					{
+						case 0:
+							drawing.FillPolygon(((Triangle)shape)._brush, ((Triangle)shape)._points);
+							break;
+						case 1:
+							drawing.DrawImage(((ImageShape)shape)._image, ((ImageShape)shape)._points);
+							break;
+					}
+					
 
 					if (i % onePercent == 0)
 					{
-						decimal percent = decimal.Divide(i, tris.Length) * 100;
+						decimal percent = decimal.Divide(i, shapes.Length) * 100;
 						Console.SetCursorPosition(0, 2);
 						Console.WriteLine("Drawing: {0:0}%", percent);
 					}
