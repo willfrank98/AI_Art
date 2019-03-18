@@ -10,7 +10,7 @@ namespace AI_Art
 	interface Shape
 	{
 		IEnumerable<Point> InteratePoints(int granularity);
-		void GenerateShape(List<string> parameters);
+		void GenerateShape(int height, int width, Random rand, List<string> parameters);
 		Color GetColorAtPoint(Point p);
 	}
 }

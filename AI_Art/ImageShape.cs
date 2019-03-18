@@ -17,9 +17,13 @@ namespace AI_Art
 
 		}
 
-		public void GenerateShape(List<string> parameters)
+		public void GenerateShape(int height, int width, Random rand, List<string> parameters)
 		{
-			throw new NotImplementedException();
+			Image image = new Bitmap(parameters[0]);
+			int minLength = int.Parse(parameters[1]);
+			int maxLength = int.Parse(parameters[2]);
+
+
 		}
 
 		public Color GetColorAtPoint(Point p)

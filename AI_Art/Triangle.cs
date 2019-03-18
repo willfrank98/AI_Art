@@ -9,37 +9,21 @@ namespace AI_Art
 		public Point[] _points;
 		public Brush _brush;
 
-		public Triangle(Point[] points, Brush brush)
+		public Triangle()
 		{
-			_points = points;
-			_brush = brush;
+
 		}
 
-		public Triangle(Random rand, int height, int width)
+		public void GenerateShape(int height, int width, Random rand, List<string> parameters)
 		{
-			var newPoints = MakeThreePoints(rand, height, width);
-			_points = newPoints;
+			int minLength = int.Parse(parameters[3]);
+			int maxLength = int.Parse(parameters[4]);
 
-			var brush = new SolidBrush(Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256)));
-			_brush = brush;
-		}
-
-		public Triangle(Random rand, int height, int width, int minLength, int maxLength)
-		{
 			var newPoints = MakeThreePoints(rand, height, width, minLength, maxLength);
 			_points = newPoints;
 
 			var brush = new SolidBrush(Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256)));
 			_brush = brush;
-		}
-
-		public Triangle()
-		{
-		}
-
-		public void GenerateShape(List<string> parameters)
-		{
-
 		}
 
 		public static Point[] MakeThreePoints(Random rand, int height, int width, int minLength = 50, int maxLength = 100)

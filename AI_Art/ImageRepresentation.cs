@@ -7,7 +7,6 @@ namespace AI_Art
 {
 	class ImageRepresentation
 	{
-		//private Random rand;
 		private int height;
 		private int width;
 		private Image image;
@@ -21,8 +20,6 @@ namespace AI_Art
 		/// <param name="filepath">Path to the image to be recreated</param>
 		public ImageRepresentation(string filepath)
 		{
-			//rand = new Random(seed);
-
 			Image temp = new Bitmap(filepath);
 			height = temp.Height;
 			width = temp.Width;
@@ -35,9 +32,10 @@ namespace AI_Art
 		/// <param name="num">Number of triangles to generate</param>
 		/// <param name="minLength">Minimum side length of the triangles</param>
 		/// <param name="maxLength">Maximum side length of the triangles</param>
-		public void NewBatch(int num, List<string> parameters)
+		public void NewBatch(int num, int type, int seed, List<string> parameters)
 		{
-			switch (int.Parse(parameters[0]))
+			Random rand = new Random(seed);
+			switch (type)
 			{
 				case 0:
 					shapes = new Triangle[num];
@@ -50,7 +48,7 @@ namespace AI_Art
 			int onePercent = num / 100;
 			for (int i = 0; i < num; i++)
 			{
-				shapes[i].GenerateShape(parameters);
+				shapes[i].GenerateShape(height, width, rand, parameters);
 
 				if (i % onePercent == 0)
 				{

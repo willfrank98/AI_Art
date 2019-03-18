@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace AI_Art
 {
@@ -105,23 +106,35 @@ namespace AI_Art
 			//	seed = args[7].GetHashCode();
 			//}
 
-			string fileIn = "";
-			string fileOut = "";
-			int type = 0;
-			int num = 0;
-			string baseImage = "";
-			int granularity = 0;
-			int drawNum = 0;
-			string seed = "";
+			//string fileIn = "";
+			//string fileOut = "";
+			//int type = 0;
+			//int num = 0;
+			//string baseImage = "";
+			//int granularity = 0;
+			//int drawNum = 0;
+			//string seed = "";
 
-			fileIn = "LastSupper.jpg";          //source file
-			fileOut = "LastSupper-Out.bmp";     //destination file
-			type = 1;
-			num = 1000000;                      //number to generate
-			baseImage = "MonaLisa.jpg";
-			granularity = 1;                    //granularity to evaluate at
-			drawNum = 100000;                   //number to draw
-			seed = "Will";						//random seed
+			//fileIn = "LastSupper.jpg";          //source file
+			//fileOut = "LastSupper-Out.bmp";     //destination file
+			//type = 1;
+			//num = 1000000;                      //number to generate
+			//baseImage = "MonaLisa.jpg";
+			//granularity = 1;                    //granularity to evaluate at
+			//drawNum = 100000;                   //number to draw
+			//seed = "Will";						//random seed
+
+
+			args = new string[] { "LastSupper.jpg", "LastSupper-Out.bmp", "1", "1000000", "100000", "1", "Will", "MonaLisa.jpg" };
+
+			string fileIn = args[0];
+			string fileOut = args[1];
+			int type = int.Parse(args[2]);
+			int num = int.Parse(args[3]);
+			int drawNum = int.Parse(args[4]);
+			int granularity = int.Parse(args[5]);
+			int seed = int.Parse(args[6]);
+			List<string> parameters = args.Skip(6).ToList();
 
 			// loads the image to be recreated
 			ImageRepresentation image = new ImageRepresentation(fileIn);
@@ -131,8 +144,7 @@ namespace AI_Art
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
 
-			List<string> parameters = new List<string> { type.ToString(), seed, baseImage };
-			image.NewBatch(num, parameters);
+			image.NewBatch(num, type, parameters);
 			image.EvaluateFitness(granularity);
 			image.Draw(drawNum, type, fileOut);
 
