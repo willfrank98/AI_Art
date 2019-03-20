@@ -35,28 +35,40 @@ namespace AI_Art
 		public void NewBatch(int num, int type, int seed, List<string> parameters)
 		{
 			Random rand = new Random(seed);
+			shapes = new Shape[num];
+			int onePercent = num / 100;
 			switch (type)
 			{
 				case 0:
-					shapes = new Triangle[num];
+					for (int i = 0; i < num; i++)
+					{
+						shapes[i] = new Triangle(height, width, rand, parameters);
+
+						if (i % onePercent == 0)
+						{
+							decimal percent = decimal.Divide(i, shapes.Length) * 100;
+							Console.SetCursorPosition(0, 0);
+							Console.WriteLine("Generating: {0:0}%", percent);
+						}
+					}
+					
 					break;
 				case 1:
-					shapes = new ImageShape[num];
+					for (int i = 0; i < num; i++)
+					{
+						shapes[i] = new ImageShape(height, width, rand, parameters);
+
+						//if (i % onePercent == 0)
+						//{
+						//	decimal percent = decimal.Divide(i, shapes.Length) * 100;
+						//	Console.SetCursorPosition(0, 0);
+						//	Console.WriteLine("Generating: {0:0}%", percent);
+						//}
+					}
+
 					break;
 			}
-
-			int onePercent = num / 100;
-			for (int i = 0; i < num; i++)
-			{
-				shapes[i].GenerateShape(height, width, rand, parameters);
-
-				if (i % onePercent == 0)
-				{
-					decimal percent = decimal.Divide(i, shapes.Length) * 100;
-					Console.SetCursorPosition(0, 0);
-					Console.WriteLine("Generating: {0:0}%", percent);
-				}
-			}
+			
 		}
 
 		/// <summary>
@@ -207,10 +219,9 @@ namespace AI_Art
 							drawing.FillPolygon(((Triangle)shape)._brush, ((Triangle)shape)._points);
 							break;
 						case 1:
-							drawing.DrawImage(((ImageShape)shape)._image, ((ImageShape)shape)._points);
+							drawing.DrawImage(((ImageShape)shape).GetImage(), ((ImageShape)shape)._points);
 							break;
 					}
-					
 
 					if (i % onePercent == 0)
 					{

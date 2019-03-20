@@ -9,12 +9,7 @@ namespace AI_Art
 		public Point[] _points;
 		public Brush _brush;
 
-		public Triangle()
-		{
-
-		}
-
-		public void GenerateShape(int height, int width, Random rand, List<string> parameters)
+		public Triangle(int height, int width, Random rand, List<string> parameters)
 		{
 			int minLength = int.Parse(parameters[3]);
 			int maxLength = int.Parse(parameters[4]);
@@ -174,11 +169,6 @@ namespace AI_Art
 		}
 
 		/* end of found code */
-
-		public Brush GetBrush()
-		{
-			return _brush;
-		}
 
 		public Color GetColorAtPoint(Point p)
 		{

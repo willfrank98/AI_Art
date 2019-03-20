@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace AI_Art
 {
@@ -9,123 +11,7 @@ namespace AI_Art
 	{
 		static int Main(string[] args)
 		{
-			//// run with no command line args to be prompted for input
-			//if (args.Length == 0)
-			//{
-			//	Console.WriteLine("Enter input file: ");
-			//	fileIn = Console.ReadLine();
-			//	Console.WriteLine("Enter output file: ");
-			//	fileOut = Console.ReadLine();
-			//	Console.WriteLine("Enter number of triangles to generate: ");
-			//	if (!int.TryParse(Console.ReadLine(), out num))
-			//	{
-			//		Console.WriteLine("Invalid input!");
-			//		return 1;
-			//	}
-			//	Console.WriteLine("Enter minimum side length: ");
-			//	if (!int.TryParse(Console.ReadLine(), out minLength))
-			//	{
-			//		Console.WriteLine("Invalid input!");
-			//		return 1;
-			//	}
-			//	Console.WriteLine("Enter maximum side length: ");
-			//	if (!int.TryParse(Console.ReadLine(), out maxLength))
-			//	{
-			//		Console.WriteLine("Invalid input!");
-			//		return 1;
-			//	}
-			//	Console.WriteLine("Enter granularity level: ");
-			//	if (!int.TryParse(Console.ReadLine(), out granularity))
-			//	{
-			//		Console.WriteLine("Invalid input!");
-			//		return 1;
-			//	}
-			//	Console.WriteLine("Enter number of triangles to draw: ");
-			//	if (!int.TryParse(Console.ReadLine(), out drawNum))
-			//	{
-			//		Console.WriteLine("Invalid input!");
-			//		return 1;
-			//	}
-			//	Console.WriteLine("Enter a seed for RNG: ");
-			//	seed = Console.ReadLine().GetHashCode();
-			//}
-			//else if (args.Length == 1)
-			//{
-			//	if (string.Equals(args[0], "-hc"))	// -hc to use hardcoded values
-			//	{
-			//args = new string[8];
-			//		fileIn = "LastSupper.jpg";			//source file
-			//		fileOut = "LastSupper-Out.bmp";		//destination file
-			//		num = 1000000;						//number to generate
-			//		minLength = 5;						//min side length
-			//		maxLength = 15;						//max side length
-			//		granularity = 3;					//granularity to evaluate at
-			//		drawNum = 100000;					//number to draw
-			//		seed = "Will".GetHashCode();		//random seed
-			//	}
-			//	else
-			//	{
-			//		Console.WriteLine("Invalid Args!");
-			//	}
-			//}
-			//else // see README.md for more info about command line args
-			//{ 
-			//	fileIn = args[0];
-			//	fileOut = args[1];
-
-			//	if (!int.TryParse(args[2], out num))
-			//	{
-			//		Console.WriteLine("Invalid Args!");
-			//		return 1;
-			//	}
-
-			//	if (!int.TryParse(args[3], out minLength))
-			//	{
-			//		Console.WriteLine("Invalid Args!");
-			//		return 1;
-			//	}
-
-			//	if (!int.TryParse(args[4], out maxLength))
-			//	{
-			//		Console.WriteLine("Invalid Args!");
-			//		return 1;
-			//	}
-
-			//	if (!int.TryParse(args[5], out granularity))
-			//	{
-			//		Console.WriteLine("Invalid Args!");
-			//		return 1;
-			//	}
-
-			//	if (!int.TryParse(args[6], out drawNum))
-			//	{
-			//		Console.WriteLine("Invalid Args!");
-			//		return 1;
-			//	}
-
-			//	seed = args[7].GetHashCode();
-			//}
-
-			//string fileIn = "";
-			//string fileOut = "";
-			//int type = 0;
-			//int num = 0;
-			//string baseImage = "";
-			//int granularity = 0;
-			//int drawNum = 0;
-			//string seed = "";
-
-			//fileIn = "LastSupper.jpg";          //source file
-			//fileOut = "LastSupper-Out.bmp";     //destination file
-			//type = 1;
-			//num = 1000000;                      //number to generate
-			//baseImage = "MonaLisa.jpg";
-			//granularity = 1;                    //granularity to evaluate at
-			//drawNum = 100000;                   //number to draw
-			//seed = "Will";						//random seed
-
-
-			args = new string[] { "LastSupper.jpg", "LastSupper-Out.bmp", "1", "1000000", "100000", "1", "Will", "MonaLisa.jpg" };
+			args = new string[] { "LastSupper.jpg", "LastSupper-Out.bmp", "1", "10", "10", "1", "Will", "MonaLisa.jpg", "20", "50" };
 
 			string fileIn = args[0];
 			string fileOut = args[1];
@@ -133,8 +19,16 @@ namespace AI_Art
 			int num = int.Parse(args[3]);
 			int drawNum = int.Parse(args[4]);
 			int granularity = int.Parse(args[5]);
-			int seed = int.Parse(args[6]);
-			List<string> parameters = args.Skip(6).ToList();
+			int seed = args[6].GetHashCode();
+			List<string> parameters = args.Skip(7).ToList();
+
+			if (type == 1)
+			{
+				Bitmap bp = new Bitmap(parameters[0]);
+				parameters.Add(bp.Height.ToString());
+				parameters.Add(bp.Width.ToString());
+				bp.Dispose();
+			}
 
 			// loads the image to be recreated
 			ImageRepresentation image = new ImageRepresentation(fileIn);
@@ -144,7 +38,7 @@ namespace AI_Art
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
 
-			image.NewBatch(num, type, parameters);
+			image.NewBatch(num, type, seed, parameters);
 			image.EvaluateFitness(granularity);
 			image.Draw(drawNum, type, fileOut);
 
