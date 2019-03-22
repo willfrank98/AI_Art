@@ -11,7 +11,7 @@ namespace AI_Art
 	{
 		static int Main(string[] args)
 		{
-			args = new string[] { "LastSupper.jpg", "LastSupper-Out.bmp", "1", "1000000", "100000", "2", "Will", "10", "20" };
+			args = new string[] { "PearlEarring.jpg", "PearlEarring-Out.bmp", "2", "500000", "100000", "2", "Will", "5", "20" };
 
 			string fileIn = args[0];
 			string fileOut = args[1];

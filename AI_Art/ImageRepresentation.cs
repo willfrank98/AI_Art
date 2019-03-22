@@ -48,9 +48,12 @@ namespace AI_Art
 					case 1:
 						shapes[i] = new Square(height, width, rand, parameters);
 						break;
-					//case 4:
-					//	shapes[i] = new ImageShape(height, width, rand, parameters);
-					//	break;
+					case 2:
+						shapes[i] = new Circle(height, width, rand, parameters);
+						break;
+						//case 4:
+						//	shapes[i] = new ImageShape(height, width, rand, parameters);
+						//	break;
 				}
 				
 
@@ -209,6 +212,9 @@ namespace AI_Art
 					{
 						default:
 							drawing.FillPolygon(shape.GetBrush(), shape.GetPoints());
+							break;
+						case 2:
+							drawing.FillEllipse(shape.GetBrush(), ((Circle)shape).GetRectangle());
 							break;
 						case 4:
 							throw new NotImplementedException("Trying to print Image image, not yet ready.");
