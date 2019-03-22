@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace AI_Art
 {
-	class ImageShape : Shape
+	class ImageShape// : Shape
 	{
 		public string _imagePath;
 		public PointF[] _points;
 		private PointF _point4;
 		private double _rotation;
+		private double _rotation2;
 		private double _ratio;
 
 		public ImageShape(int height, int width, Random rand, List<string> parameters)
@@ -38,12 +39,13 @@ namespace AI_Art
 			int newWidth = (int)(newImgWidth * ratio);
 
 			double shiftX = Math.Sin(rotation) * newHeight;
-			double shiftY = Math.Cos(rotation) * newWidth;
+			double shiftY = Math.Cos(rotation) * newHeight;
 			int tempX2 = tempX1 + (int)shiftX;
 			int tempY2 = tempY1 + (int)shiftY;
 			PointF p2 = new Point(tempX2, tempY2);
 
-			rotation += (Math.PI / 2) % Math.PI;
+			rotation -= (Math.PI / 2) % Math.PI;
+			_rotation2 = rotation;
 
 			shiftX = Math.Sin(rotation) * newWidth;
 			shiftY = Math.Cos(rotation) * newWidth;
@@ -63,31 +65,38 @@ namespace AI_Art
 
 		public Color GetColorAtPoint(Point p)
 		{
-			int diffX = p.X - (int)_points[0].X;
-			int diffY = p.Y - (int)_points[0].Y;
+			double diffX = p.X - _points[0].X;
+			double diffY = p.Y - _points[0].Y;
 
-			int adjustedX = (int)(diffX / Math.Sin(_rotation) / _ratio);
+			double sin = Math.Sin(_rotation);
+			double sin2 = Math.Sin(_rotation2);
+			double cos = Math.Cos(_rotation);
+			double cos2 = Math.Cos(_rotation2);
+			double oldHeight = diffX / _ratio;
+			double oldWidth = diffY / _ratio;
+
+			int adjustedX = (int)(oldWidth / sin);
 			int adjustedY = (int)(diffY / Math.Cos(_rotation) / _ratio);
 
 			Bitmap bp = new Bitmap(_imagePath);
 			return bp.GetPixel(adjustedX, adjustedY);
 		}
 
-		public IEnumerable<Point> InteratePoints(int granularity)
+		public IEnumerable<Point> IteratePoints(int granularity)
 		{
-			foreach (Point point in InterateTriangle(_points, granularity))
+			foreach (Point point in IterateTriangle(_points, granularity))
 			{
 				yield return point;
 			}
 
 			PointF[] newPoints = new PointF[] { _points[2], _points[3], _point4 };
-			foreach (Point point in InterateTriangle(newPoints, granularity))
+			foreach (Point point in IterateTriangle(newPoints, granularity))
 			{
 				yield return point;
 			}
 		}
 
-		private IEnumerable<Point> InterateTriangle(PointF[] points, int granularity)
+		private IEnumerable<Point> IterateTriangle(PointF[] points, int granularity)
 		{
 			Point pt1 = new Point((int)points[0].X, (int)points[0].Y);
 			Point pt2 = new Point((int)points[1].X, (int)points[1].Y);
@@ -180,5 +189,14 @@ namespace AI_Art
 			return new Bitmap(_imagePath);
 		}
 
+		//public Brush GetBrush()
+		//{
+		//	return _brush;
+		//}
+
+		//public Point[] GetPoints()
+		//{
+		//	return _points;
+		//}
 	}
 }

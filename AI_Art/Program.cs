@@ -11,7 +11,7 @@ namespace AI_Art
 	{
 		static int Main(string[] args)
 		{
-			args = new string[] { "LastSupper.jpg", "LastSupper-Out.bmp", "1", "10", "10", "1", "Will", "MonaLisa.jpg", "20", "50" };
+			args = new string[] { "LastSupper.jpg", "LastSupper-Out.bmp", "1", "1000000", "100000", "2", "Will", "10", "20" };
 
 			string fileIn = args[0];
 			string fileOut = args[1];
@@ -22,7 +22,7 @@ namespace AI_Art
 			int seed = args[6].GetHashCode();
 			List<string> parameters = args.Skip(7).ToList();
 
-			if (type == 1)
+			if (type == 4)
 			{
 				Bitmap bp = new Bitmap(parameters[0]);
 				parameters.Add(bp.Height.ToString());
@@ -34,7 +34,7 @@ namespace AI_Art
 			ImageRepresentation image = new ImageRepresentation(fileIn);
 
 			// starts a timer, just for testing
-			// TODO: add option to not time
+			// TODO: add option to not time?
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
 

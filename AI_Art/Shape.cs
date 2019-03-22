@@ -9,7 +9,9 @@ namespace AI_Art
 {
 	interface Shape
 	{
-		IEnumerable<Point> InteratePoints(int granularity);
+		IEnumerable<Point> IteratePoints(int granularity);
 		Color GetColorAtPoint(Point p);
+		Brush GetBrush();
+		Point[] GetPoints();
 	}
 }

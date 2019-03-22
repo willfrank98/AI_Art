@@ -6,13 +6,13 @@ namespace AI_Art
 {
 	class Triangle : Shape
 	{
-		public Point[] _points;
-		public Brush _brush;
+		private Point[] _points;
+		private Brush _brush;
 
 		public Triangle(int height, int width, Random rand, List<string> parameters)
 		{
-			int minLength = int.Parse(parameters[3]);
-			int maxLength = int.Parse(parameters[4]);
+			int minLength = int.Parse(parameters[0]);
+			int maxLength = int.Parse(parameters[1]);
 
 			var newPoints = MakeThreePoints(rand, height, width, minLength, maxLength);
 			_points = newPoints;
@@ -80,7 +80,7 @@ namespace AI_Art
 		/* code I found at https://stackoverflow.com/questions/11075505/get-all-points-within-a-triangle, slightly modified */
 
 		// Enumerates all points in triangle described by the given three points at the given level of granularity
-		public IEnumerable<Point> InteratePoints(int granularity)
+		public IEnumerable<Point> IteratePoints(int granularity)
 		{
 			Point pt1 = _points[0];
 			Point pt2 = _points[1];
@@ -173,6 +173,16 @@ namespace AI_Art
 		public Color GetColorAtPoint(Point p)
 		{
 			return ((SolidBrush)_brush).Color;
+		}
+
+		public Brush GetBrush()
+		{
+			return _brush;
+		}
+
+		public Point[] GetPoints()
+		{
+			return _points;
 		}
 	}
 }

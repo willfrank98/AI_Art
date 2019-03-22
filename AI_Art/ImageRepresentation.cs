@@ -37,38 +37,30 @@ namespace AI_Art
 			Random rand = new Random(seed);
 			shapes = new Shape[num];
 			int onePercent = num / 100;
-			switch (type)
-			{
-				case 0:
-					for (int i = 0; i < num; i++)
-					{
-						shapes[i] = new Triangle(height, width, rand, parameters);
-
-						if (i % onePercent == 0)
-						{
-							decimal percent = decimal.Divide(i, shapes.Length) * 100;
-							Console.SetCursorPosition(0, 0);
-							Console.WriteLine("Generating: {0:0}%", percent);
-						}
-					}
-					
-					break;
-				case 1:
-					for (int i = 0; i < num; i++)
-					{
-						shapes[i] = new ImageShape(height, width, rand, parameters);
-
-						//if (i % onePercent == 0)
-						//{
-						//	decimal percent = decimal.Divide(i, shapes.Length) * 100;
-						//	Console.SetCursorPosition(0, 0);
-						//	Console.WriteLine("Generating: {0:0}%", percent);
-						//}
-					}
-
-					break;
-			}
 			
+			for (int i = 0; i < num; i++)
+			{
+				switch(type)
+				{
+					case 0:
+						shapes[i] = new Triangle(height, width, rand, parameters);
+						break;
+					case 1:
+						shapes[i] = new Square(height, width, rand, parameters);
+						break;
+					//case 4:
+					//	shapes[i] = new ImageShape(height, width, rand, parameters);
+					//	break;
+				}
+				
+
+				if (i % onePercent == 0)
+				{
+					decimal percent = decimal.Divide(i, shapes.Length) * 100;
+					Console.SetCursorPosition(0, 0);
+					Console.WriteLine("Generating: {0:0}%", percent);
+				}
+			}
 		}
 
 		/// <summary>
@@ -93,7 +85,7 @@ namespace AI_Art
 			for (int i = 0; i < shapes.Length; i++)
 			{
 				int pixels = 0;
-				foreach (Point point in shapes[i].InteratePoints(granularity))
+				foreach (Point point in shapes[i].IteratePoints(granularity))
 				{
 					if (point.X >= 0 && point.X < image.Width && point.Y >= 0 && point.Y < image.Height)
 					{
@@ -215,12 +207,13 @@ namespace AI_Art
 					Shape shape = shapes[i];
 					switch (imageType)
 					{
-						case 0:
-							drawing.FillPolygon(((Triangle)shape)._brush, ((Triangle)shape)._points);
+						default:
+							drawing.FillPolygon(shape.GetBrush(), shape.GetPoints());
 							break;
-						case 1:
-							drawing.DrawImage(((ImageShape)shape).GetImage(), ((ImageShape)shape)._points);
-							break;
+						case 4:
+							throw new NotImplementedException("Trying to print Image image, not yet ready.");
+							//drawing.DrawImage(((ImageShape)shape).GetImage(), ((ImageShape)shape)._points);
+							//break;
 					}
 
 					if (i % onePercent == 0)
