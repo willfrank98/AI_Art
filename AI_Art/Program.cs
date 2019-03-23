@@ -11,7 +11,7 @@ namespace AI_Art
 	{
 		static int Main(string[] args)
 		{
-			args = new string[] { "PearlEarring.jpg", "PearlEarring-Out.bmp", "2", "500000", "100000", "2", "Will", "5", "20" };
+			args = new string[] { "MonaLisa.jpg", "MonaLisa-Out.bmp", "3", "500000", "100000", "2", "Will", "10", "20" };
 
 			string fileIn = args[0];
 			string fileOut = args[1];
@@ -21,14 +21,6 @@ namespace AI_Art
 			int granularity = int.Parse(args[5]);
 			int seed = args[6].GetHashCode();
 			List<string> parameters = args.Skip(7).ToList();
-
-			if (type == 4)
-			{
-				Bitmap bp = new Bitmap(parameters[0]);
-				parameters.Add(bp.Height.ToString());
-				parameters.Add(bp.Width.ToString());
-				bp.Dispose();
-			}
 
 			// loads the image to be recreated
 			ImageRepresentation image = new ImageRepresentation(fileIn);

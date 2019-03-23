@@ -47,6 +47,7 @@ namespace AI_Art
 			return new Rectangle(_center.X - _r, _center.Y - _r, _r * 2, _r * 2);
 		}
 
+		// https://stackoverflow.com/questions/40779343/java-loop-through-all-pixels-in-a-2d-circle-with-center-x-y-and-radius
 		public IEnumerable<Point> IteratePoints(int granularity)
 		{
 			int x = _center.X;

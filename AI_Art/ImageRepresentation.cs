@@ -51,11 +51,11 @@ namespace AI_Art
 					case 2:
 						shapes[i] = new Circle(height, width, rand, parameters);
 						break;
-						//case 4:
-						//	shapes[i] = new ImageShape(height, width, rand, parameters);
-						//	break;
+					case 3:
+						shapes[i] = new RegularTriangle(height, width, rand, parameters);
+						break;
 				}
-				
+
 
 				if (i % onePercent == 0)
 				{
@@ -216,10 +216,6 @@ namespace AI_Art
 						case 2:
 							drawing.FillEllipse(shape.GetBrush(), ((Circle)shape).GetRectangle());
 							break;
-						case 4:
-							throw new NotImplementedException("Trying to print Image image, not yet ready.");
-							//drawing.DrawImage(((ImageShape)shape).GetImage(), ((ImageShape)shape)._points);
-							//break;
 					}
 
 					if (i % onePercent == 0)
