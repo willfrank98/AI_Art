@@ -122,7 +122,7 @@ namespace AI_Art
 				int maxY;
 				int minY = GetRange(line1Func(x), baseFunc(x), out maxY);
 
-				for (var y = minY; y <= maxY; y += granularity)
+				for (var y = minY; y <= maxY; y += 1)
 				{
 					yield return new Point(x, y);
 				}
@@ -135,7 +135,7 @@ namespace AI_Art
 				int maxY;
 				int minY = GetRange(line2Func(x), baseFunc(x), out maxY);
 
-				for (var y = minY; y <= maxY; y += granularity)
+				for (var y = minY; y <= maxY; y += 1)
 				{
 					yield return new Point(x, y);
 				}

@@ -13,7 +13,7 @@ namespace AI_Art
 		{
 			if (args[0].Equals("-hc"))
 			{
-				args = new string[] { "MonaLisa.jpg", "MonaLisa-Out.bmp", "0", "500000", "100000", "2", "Will", "5", "20" };
+				args = new string[] { "StarryNight.jpg", "StarryNight-Out.bmp", "3", "1000000", "200000", "2", "Will", "10", "20" };
 			}
 
 			string fileIn = args[0];
