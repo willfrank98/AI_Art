@@ -55,11 +55,11 @@ namespace AI_Art
 			int r = _r;
 			for (int i = y - r; i < y + r; i++)
 			{
-				for (int j = x; (j - x) * (j - x) + (i - y) * (i - y) <= r * r; j--)
+				for (int j = x; (j - x) * (j - x) + (i - y) * (i - y) <= r * r; j -= granularity)
 				{
 					yield return new Point(j, i);
 				}
-				for (int j = x + 1; (j - x) * (j - x) + (i - y) * (i - y) <= r * r; j++)
+				for (int j = x + 1; (j - x) * (j - x) + (i - y) * (i - y) <= r * r; j += granularity)
 				{
 					yield return new Point(j, i);
 				}

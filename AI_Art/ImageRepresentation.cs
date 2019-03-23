@@ -13,11 +13,6 @@ namespace AI_Art
 		private Shape[] shapes;
 		private double[] fitness;
 
-		/// <summary>
-		/// Initializer
-		/// </summary>
-		/// <param name="seed">The random seed from which all triangles are generated</param>
-		/// <param name="filepath">Path to the image to be recreated</param>
 		public ImageRepresentation(string filepath)
 		{
 			Image temp = new Bitmap(filepath);
@@ -26,12 +21,6 @@ namespace AI_Art
 			image = temp;
 		}
 
-		/// <summary>
-		/// Creates a new batch of random triangles
-		/// </summary>
-		/// <param name="num">Number of triangles to generate</param>
-		/// <param name="minLength">Minimum side length of the triangles</param>
-		/// <param name="maxLength">Maximum side length of the triangles</param>
 		public void NewBatch(int num, int type, int seed, List<string> parameters)
 		{
 			Random rand = new Random(seed);
@@ -66,11 +55,6 @@ namespace AI_Art
 			}
 		}
 
-		/// <summary>
-		/// Evaluates all generated triangles for fitness
-		/// </summary>
-		/// <param name="granularity">The level of granularity to evaulate the triangles (how many pixels per triangle are looked at),
-		///							  directly affects performance</param>
 		public unsafe void EvaluateFitness(int granularity)
 		{
 			//open image
@@ -81,7 +65,7 @@ namespace AI_Art
 
 			byte* scanImage = (byte*)bData.Scan0.ToPointer();
 
-			//evaluate triangles
+			//evaluate shapes
 			double[] fitness = new double[shapes.Length];
 
 			int onePercent = shapes.Length / 100;
@@ -141,7 +125,6 @@ namespace AI_Art
 				{
 					c[i] = Math.Pow((c[i] + 0.055) / 1.055, 2.4);
 				}
-				//c[i] = Math.Pow(c[i], 2.2);
 			}
 
 			double[,] M = new double[3, 3]{ { 0.4124564, 0.3575761, 0.1804375 },
@@ -192,18 +175,13 @@ namespace AI_Art
 			return Lab;
 		}
 
-		/// <summary>
-		/// Draws a certain number of the evaluated triangles.
-		/// </summary>
-		/// <param name="thisMany">How many of the top triangles to draw.</param>
-		/// <param name="imageOut">Filepath for output image.</param>
 		public void Draw(int thisMany, int imageType, string imageOut)
 		{
 			using (var drawing = Graphics.FromImage(image))
 			{
 				drawing.Clear(Color.White);
 
-				//draws the top ranking thisMany triangles, from worst to best
+				//draws the top ranking thisMany shapes, from worst to best
 				int onePercent = thisMany / 100;
 				for (int i = shapes.Length - thisMany; i < shapes.Length; i++)
 				{

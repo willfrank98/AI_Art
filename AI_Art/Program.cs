@@ -11,15 +11,44 @@ namespace AI_Art
 	{
 		static int Main(string[] args)
 		{
-			args = new string[] { "MonaLisa.jpg", "MonaLisa-Out.bmp", "3", "500000", "100000", "2", "Will", "10", "20" };
+			if (args[0].Equals("-hc"))
+			{
+				args = new string[] { "MonaLisa.jpg", "MonaLisa-Out.bmp", "0", "500000", "100000", "2", "Will", "5", "20" };
+			}
 
 			string fileIn = args[0];
 			string fileOut = args[1];
-			int type = int.Parse(args[2]);
-			int num = int.Parse(args[3]);
-			int drawNum = int.Parse(args[4]);
-			int granularity = int.Parse(args[5]);
-			int seed = args[6].GetHashCode();
+
+			int type;
+			if (!int.TryParse(args[2], out type))
+			{
+				Console.WriteLine("Invalid Args!");
+				return 1;
+			}
+
+			int num;
+			if (!int.TryParse(args[3], out num))
+			{
+				Console.WriteLine("Invalid Args!");
+				return 1;
+			}
+
+			int drawNum;
+			if (!int.TryParse(args[4], out drawNum))
+			{
+				Console.WriteLine("Invalid Args!");
+				return 1;
+			}
+
+			int granularity;
+			if (!int.TryParse(args[5], out granularity))
+			{
+				Console.WriteLine("Invalid Args!");
+				return 1;
+			}
+
+			int seed = args[7].GetHashCode();
+		
 			List<string> parameters = args.Skip(7).ToList();
 
 			// loads the image to be recreated
