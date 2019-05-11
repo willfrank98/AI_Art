@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace AI_Art
 {
-	class Triangle : Shape
+	class Triangle : IShape
 	{
 		private Point[] _points;
 		private Brush _brush;

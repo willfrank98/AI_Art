@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AI_Art
 {
-	class Circle : Shape
+	class Circle : IShape
 	{
 		private Brush _brush;
 		private Point _center;

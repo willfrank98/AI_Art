@@ -10,7 +10,7 @@ namespace AI_Art
 		private int height;
 		private int width;
 		private Image image;
-		private Shape[] shapes;
+		private IShape[] shapes;
 		private double[] fitness;
 
 		public ImageRepresentation(string filepath)
@@ -24,7 +24,7 @@ namespace AI_Art
 		public void NewBatch(int num, int type, int seed, List<string> parameters)
 		{
 			Random rand = new Random(seed);
-			shapes = new Shape[num];
+			shapes = new IShape[num];
 			int onePercent = num / 100;
 			
 			for (int i = 0; i < num; i++)
@@ -185,7 +185,7 @@ namespace AI_Art
 				int onePercent = thisMany / 100;
 				for (int i = shapes.Length - thisMany; i < shapes.Length; i++)
 				{
-					Shape shape = shapes[i];
+					IShape shape = shapes[i];
 					switch (imageType)
 					{
 						default:

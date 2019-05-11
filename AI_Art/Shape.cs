@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AI_Art
 {
-	interface Shape
+	interface IShape
 	{
 		IEnumerable<Point> IteratePoints(int granularity);
 		Color GetColorAtPoint(Point p);

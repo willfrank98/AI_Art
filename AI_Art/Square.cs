@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AI_Art
 {
-	class Square : Shape
+	class Square : IShape
 	{
 		private Point[] _points;
 		private Brush _brush;

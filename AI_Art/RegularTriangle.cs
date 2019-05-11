@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AI_Art
 {
-	class RegularTriangle : Shape
+	class RegularTriangle : IShape
 	{
 		private Point[] _points;
 		private Brush _brush;
